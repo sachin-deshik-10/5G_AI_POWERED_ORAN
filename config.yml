@@ -1,0 +1,48 @@
+# Configuration file for 5G AI-Powered OpenRAN Optimizer
+
+# Directories
+data_dir: "data"
+models_dir: "models"
+logs_dir: "logs"
+predictions_dir: "predictions"
+
+# Logging configuration
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
+# Data transformation configuration
+data_transformation:
+  columns:
+    - name: "dl_kbps_i"
+      type: "log"
+    - name: "ul_kbps_i"
+      type: "log"
+    - name: "cpu_i"
+      type: "sqrt"
+
+# Model configuration
+models:
+  network_anomaly_detection:
+    algorithm: "isolation_forest"
+    contamination: 0.1
+  
+  predictive_network_planning:
+    algorithm: "random_forest"
+    n_estimators: 100
+    max_depth: 10
+  
+  dynamic_network_optimization:
+    algorithm: "reinforcement_learning"
+    learning_rate: 0.01
+  
+  energy_efficiency_optimization:
+    algorithm: "genetic_algorithm"
+    population_size: 50
+    generations: 100
+
+# Data cleaning configuration
+data_cleaning:
+  drop_null_threshold: 0.5
+  outlier_detection: true
+  outlier_method: "iqr"
