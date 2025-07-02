@@ -1,39 +1,133 @@
-# Data Processing Libraries
-pandas>=1.3.0
-numpy>=1.21.0
-scikit-learn>=0.24.0
+# Core Data Processing Libraries
+pandas>=2.1.0
+numpy>=1.25.0
+scikit-learn>=1.3.0
+polars>=0.19.0  # Ultra-fast DataFrame library
 
-# Data Extraction Libraries
-requests>=2.25.0
-beautifulsoup4>=4.9.0
+# Advanced AI/ML Libraries
+tensorflow>=2.15.0
+torch>=2.1.0
+transformers>=4.35.0  # Hugging Face Transformers
+ray>=2.8.0  # Distributed computing
+optuna>=3.4.0  # Hyperparameter optimization
+xgboost>=2.0.0
+lightgbm>=4.1.0
 
-# Network Optimization Libraries
-tensorflow>=2.8.0
-torch>=1.11.0
+# Deep Learning & Neural Networks
+pytorch-lightning>=2.1.0
+torchvision>=0.16.0
+timm>=0.9.0  # PyTorch Image Models
 
-# Energy Efficiency Optimization Libraries
-pulp>=2.4
+# MLOps & Model Management
+mlflow>=2.8.0
+wandb>=0.16.0
+dvc>=3.32.0  # Data Version Control
+great-expectations>=0.18.0  # Data validation
 
-# Predictive Network Planning Libraries
-scipy>=1.7.0
-statsmodels>=0.12.0
+# Real-time Processing
+apache-kafka-python>=2.0.2
+redis>=5.0.0
+celery>=5.3.0
+apache-airflow>=2.7.0
 
-# Network Anomaly Detection Libraries
-matplotlib>=3.4.0
-seaborn>=0.11.0
-pyod>=0.9.0
+# API & Web Services
+fastapi>=0.104.0
+uvicorn>=0.24.0
+streamlit>=1.28.0
+dash>=2.14.0
+websockets>=12.0
 
-# Visualization Libraries
-plotly>=5.0.0
+# Database & Storage
+sqlalchemy>=2.0.0
+alembic>=1.12.0
+psycopg2-binary>=2.9.0
+pymongo>=4.6.0
+minio>=7.2.0  # S3-compatible storage
 
-# Configuration and Utilities
-PyYAML>=5.4.0
-joblib>=1.0.0
+# Monitoring & Observability
+prometheus_client>=0.19.0
+grafana-client>=3.7.0
+opentelemetry-api>=1.21.0
+opentelemetry-exporter-prometheus>=1.12.0
 
-# Testing
-pytest>=6.2.0
+# Network & Communication
+grpcio>=1.59.0
+aiohttp>=3.9.0
+httpx>=0.25.0
 
-# Note: This file lists all the required libraries and their versions for the Network Optimization System.
-# To install these libraries, run the following command:
-# pip install -r requirements.txt
-# Note: It's recommended to create a new virtual environment before installing these libraries to avoid conflicts with existing libraries on your system.
+# Data Extraction & APIs
+requests>=2.31.0
+beautifulsoup4>=4.12.0
+selenium>=4.15.0
+pydantic>=2.5.0
+
+# Energy Efficiency Optimization
+pulp>=2.7.0
+cvxpy>=1.4.0  # Convex optimization
+ortools>=9.8.0  # Google OR-Tools
+
+# Time Series & Forecasting
+prophet>=1.1.0
+neuralprophet>=0.7.0
+darts>=0.25.0  # Time series forecasting
+sktime>=0.24.0
+
+# Anomaly Detection
+pyod>=1.1.0
+alibi-detect>=0.12.0
+isolation-forest>=0.1.0
+
+# Visualization & Dashboards
+matplotlib>=3.8.0
+seaborn>=0.13.0
+plotly>=5.17.0
+bokeh>=3.3.0
+altair>=5.2.0
+
+# Scientific Computing
+scipy>=1.11.0
+statsmodels>=0.14.0
+sympy>=1.12.0
+
+# Configuration & Utilities
+PyYAML>=6.0.1
+python-dotenv>=1.0.0
+click>=8.1.0
+typer>=0.9.0
+rich>=13.7.0  # Rich terminal output
+tqdm>=4.66.0
+
+# Cloud & Infrastructure
+boto3>=1.34.0  # AWS SDK
+google-cloud-storage>=2.10.0
+azure-storage-blob>=12.19.0
+kubernetes>=28.1.0
+
+# Security & Authentication
+cryptography>=41.0.0
+pyjwt>=2.8.0
+passlib>=1.7.4
+
+# Testing & Quality
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+pytest-cov>=4.1.0
+black>=23.11.0
+flake8>=6.1.0
+mypy>=1.7.0
+
+# Jupyter & Development
+jupyter>=1.0.0
+jupyterlab>=4.0.0
+ipywidgets>=8.1.0
+
+# Edge Computing & IoT
+paho-mqtt>=1.6.0
+edge-tpu>=2.1.0
+onnx>=1.15.0
+onnxruntime>=1.16.0
+
+# Performance & Optimization
+numba>=0.58.0
+cython>=3.0.0
+joblib>=1.3.0
