@@ -1,7 +1,9 @@
 # AI-Powered-5G-OpenRAN-Optimizer
-Welcome to the AI-Powered 5G Open RAN Optimizer repository! 
+
+Welcome to the AI-Powered 5G Open RAN Optimizer repository!
 
 ## Overview
+
 This repository contains an AI-powered optimization system for Open RAN that leverages machine learning algorithms to optimize the performance of the network. The system can learn from historical data, real-time network data, and external data sources to identify network anomalies, predict network traffic, and optimize network resources allocation.
 
 The AI-powered optimization system includes the following features:
@@ -17,6 +19,7 @@ The AI-powered optimization system includes the following features:
 To implement this project, we used various AI technologies, such as supervised and unsupervised machine learning algorithms, deep learning, reinforcement learning, and natural language processing. We also integrated the AI-powered optimization system with Open RAN interfaces, such as O-RAN, to enable seamless integration and interoperability.
 
 ## Project Structure
+
 The project is structured as follows:
 
 ~ `data`: This folder contains the datasets used to train and evaluate the machine learning models.
@@ -30,44 +33,61 @@ The project is structured as follows:
 ~ `tests`: This folder contains unit tests and integration tests for the AI-powered optimization system.
 
 ## Installation
+
 To install the AI-powered optimization system, follow these steps:
 
 1. Clone the repository:
-```bash 
-git clone https://github.com/N00Bception/AI-Powered-5G-OpenRAN-Optimizer.git
+
+```bash
+git clone https://github.com/sachin-deshik-10/5G_AI_POWERED_ORAN.git
 ```
+
 2. Install the required dependencies:
+
 ```bash
 pip install -r requirements.txt
 ```
 
 ## Usage
+
 To use the AI-powered optimization system, follow these steps:
 
 1. Prepare the data:
-```bash 
+
+```bash
 python src/preprocess.py --input <input_data_path> --output <output_data_path>
 ```
+
 2. Train the machine learning models:
+
 ```bash
 python src/train.py --input <training_data_path> --output <models_path>
 ```
+
 3. Evaluate the machine learning models:
-```bash 
+
+```bash
 python src/evaluate.py --input <evaluation_data_path> --models <models_path>
 ```
+
 4. Run the AI-powered optimization system:
+
 ```bash
 python src/optimize.py --input <real-time_data_path> --models <models_path> --output <optimized_data_path>
 ```
+
 ## Acknowledgments
+
 This project was developed by Salim EL GHALBOZURI -Azure AI Engineer- as part of National Institute of Postes and Telecommunications's 5G-RAN Engineer program. We would like to acknowledge the contributions of the Open RAN community and the open-source AI frameworks used in this project.
 
 ## Contributing
+
 This project is a work in progress, and we welcome contributions from developers and researchers. If you'd like to contribute, please fork the repository, make your changes, and submit a pull request.
 
 ## License
+
 This project is released under the Apache-2.0 License.
 
 ## Disclaimer
+
 This project is still a work in progress. We're actively working on improving the system and adding more features. Please keep in mind that the code is still under development, and we may make breaking changes in the future. We appreciate your understanding and patience.

@@ -1,0 +1,7 @@
+Model Evaluation Results
+========================
+MSE: 0.0100
+RMSE: 0.1002
+MAE: 0.0701
+R²: 0.6787
+Samples: 10000

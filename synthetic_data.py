@@ -3,9 +3,6 @@ import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
 
-
-
-
 # Set random seed for reproducibility
 np.random.seed(42)
 
@@ -82,4 +79,4 @@ def generate_application_data(filename, n=10000):
 
 generate_application_data("application_datasets/realistic_application.csv")
 
-print("✅ Large, realistic datasets generated successfully!")
+print("Large, realistic datasets generated successfully!")
