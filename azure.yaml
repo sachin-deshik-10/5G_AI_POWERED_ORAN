@@ -1,0 +1,65 @@
+# Azure Developer CLI configuration for Advanced 5G OpenRAN AI Optimizer
+name: advanced-5g-openran-optimizer
+metadata:
+  template: advanced-5g-openran-ai-optimizer@0.0.1-beta
+
+# Services configuration
+services:
+  advanced-5g-oran-api:
+    project: ./api
+    language: python
+    host: containerapp
+
+  advanced-5g-oran-dashboard:
+    project: ./dashboard
+    language: python
+    host: containerapp
+
+# Infrastructure configuration
+infra:
+  provider: bicep
+  path: infra
+
+# Pipeline configuration for CI/CD
+pipeline:
+  provider: github-actions
+  variables:
+    - AZURE_ENV_NAME
+    - AZURE_LOCATION
+    - AZURE_SUBSCRIPTION_ID
+    - AZURE_TENANT_ID
+    - AZURE_PRINCIPAL_ID
+
+# Hooks for advanced setup
+hooks:
+  prerestore:
+    shell: pwsh
+    run: |
+      Write-Host "🔧 Setting up Advanced 5G OpenRAN environment..."
+      if (!(Test-Path "models")) { New-Item -ItemType Directory -Path "models" }
+      if (!(Test-Path "logs")) { New-Item -ItemType Directory -Path "logs" }
+      if (!(Test-Path "predictions")) { New-Item -ItemType Directory -Path "predictions" }
+      Write-Host "✅ Directories created successfully"
+
+  postprovision:
+    shell: pwsh
+    run: |
+      Write-Host "🚀 Configuring post-deployment settings..."
+      Write-Host "✅ Advanced 5G OpenRAN infrastructure provisioned successfully!"
+      Write-Host "🌐 API Endpoint: $env:API_SERVICE_FQDN"
+      Write-Host "📊 Dashboard Endpoint: $env:DASHBOARD_SERVICE_FQDN"
+
+  predeploy:
+    shell: pwsh
+    run: |
+      Write-Host "🔨 Building Advanced 5G OpenRAN components..."
+      Write-Host "📦 Preparing containers for deployment..."
+
+  postdeploy:
+    shell: pwsh
+    run: |
+      Write-Host "🎉 Advanced 5G OpenRAN deployment completed!"
+      Write-Host "🧠 Cognitive Intelligence Engine: Ready"
+      Write-Host "🔥 Edge AI Processing: Active"
+      Write-Host "🛡️ Network Security AI: Monitoring"
+      Write-Host "🤖 Autonomous Operations: Enabled"

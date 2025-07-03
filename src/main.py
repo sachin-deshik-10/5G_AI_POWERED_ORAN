@@ -195,7 +195,7 @@ class Advanced5GOpenRANSystem:
                 self.performance_metrics['processing_latency'].append(processing_time)
                 
                 # Log comprehensive results
-                self._log_iteration_results(iteration, processing_time, optimization_results, cognitive_insights)
+                self._log_iteration_results(iteration, processing_time, optimization_results, cognitive_insights, edge_analysis, security_analysis)
                 
                 # Export real-time data for dashboard/API
                 self._export_real_time_data()
@@ -339,7 +339,7 @@ class Advanced5GOpenRANSystem:
         
         return np.array(features).reshape(1, -1)
     
-    async def _autonomous_decision_making(self, data: dict, optimization: dict, insights: dict) -> dict:
+    async def _autonomous_decision_making(self, data: dict, optimization: dict, insights: dict, edge_analysis: dict, security_analysis: dict) -> dict:
         """Make autonomous decisions based on AI analysis"""
         if not self.config['autonomous_mode']:
             return {'autonomous_mode': 'disabled'}
@@ -356,10 +356,117 @@ class Advanced5GOpenRANSystem:
                 if best_solution:
                     actions.append({
                         'type': 'load_balancing',
-                        'confidence': np.random.uniform(0.8, 0.95),
+                        'description': 'Optimal resource allocation based on Pareto analysis',
+                        'confidence': 0.85,
                         'parameters': best_solution,
-                        'expected_improvement': np.random.uniform(10, 30)
+                        'timestamp': datetime.now()
                     })
+        
+        # Edge AI autonomous actions
+        if edge_analysis and not edge_analysis.get('error'):
+            edge_metrics = edge_analysis.get('edge_metrics', {})
+            if edge_metrics.get('performance_metrics', {}).get('average_latency', 0) > 0.01:  # > 10ms
+                actions.append({
+                    'type': 'edge_optimization',
+                    'description': 'Optimize edge deployment for lower latency',
+                    'confidence': 0.9,
+                    'target_latency_ms': 5.0,
+                    'timestamp': datetime.now()
+                })
+        
+        # Security autonomous actions
+        if security_analysis and not security_analysis.get('error'):
+            threat_level = security_analysis.get('threat_level', 'MINIMAL')
+            if threat_level in ['HIGH', 'CRITICAL']:
+                actions.append({
+                    'type': 'security_response',
+                    'description': f'Automated response to {threat_level} threat',
+                    'confidence': 0.95,
+                    'threat_level': threat_level,
+                    'actions_taken': security_analysis.get('security_analysis', {}).get('security_events', []),
+                    'timestamp': datetime.now()
+                })
+        
+        # Cognitive intelligence autonomous actions
+        if insights and not insights.get('error'):
+            if insights.get('autonomous_healing_activated'):
+                actions.append({
+                    'type': 'self_healing',
+                    'description': 'Autonomous network self-healing activated',
+                    'confidence': 0.88,
+                    'healing_actions': insights.get('healing_actions', []),
+                    'timestamp': datetime.now()
+                })
+        
+        return {
+            'actions': actions,
+            'total_actions': len(actions),
+            'autonomous_confidence': np.mean([action['confidence'] for action in actions]) if actions else 0.0,
+            'decision_factors': {
+                'optimization_based': len([a for a in actions if a['type'] in ['load_balancing']]),
+                'edge_based': len([a for a in actions if a['type'] == 'edge_optimization']),
+                'security_based': len([a for a in actions if a['type'] == 'security_response']),
+                'cognitive_based': len([a for a in actions if a['type'] == 'self_healing'])
+            },
+            'system_health_score': self._calculate_system_health(data, edge_analysis, security_analysis),
+            'timestamp': datetime.now()
+        }
+    
+    def _calculate_system_health(self, data: dict, edge_analysis: dict, security_analysis: dict) -> float:
+        """Calculate overall system health score"""
+        health_factors = []
+        
+        # Network performance health
+        kpis = data.get('network_kpis', {})
+        network_health = (
+            kpis.get('network_availability', 0) / 100.0 * 0.3 +
+            (100 - kpis.get('average_latency', 100)) / 100.0 * 0.3 +
+            kpis.get('energy_efficiency', 0) / 100.0 * 0.2 +
+            kpis.get('user_satisfaction', 0) / 100.0 * 0.2
+        )
+        health_factors.append(network_health)
+        
+        # Edge AI health
+        if edge_analysis and not edge_analysis.get('error'):
+            edge_metrics = edge_analysis.get('edge_metrics', {})
+            edge_health = edge_metrics.get('performance_metrics', {}).get('optimization_efficiency', 0.8)
+            health_factors.append(edge_health)
+        
+        # Security health
+        if security_analysis and not security_analysis.get('error'):
+            security_posture = security_analysis.get('security_posture', {})
+            security_health = security_posture.get('overall_score', 0.8)
+            health_factors.append(security_health)
+        
+        return np.mean(health_factors) * 100 if health_factors else 85.0
+        
+    def _store_real_time_results(self, data, optimization, insights, twin_state, actions, edge_analysis, security_analysis):
+        """Store results for real-time access"""
+        # Keep only last 100 entries for memory efficiency
+        max_entries = 100
+        
+        self.real_time_data['network_metrics'].append(data)
+        self.real_time_data['optimization_results'].append(optimization)
+        self.real_time_data['cognitive_insights'].append(insights)
+        self.real_time_data['digital_twin_states'].append(twin_state)
+        self.real_time_data['autonomous_actions'].append(actions)
+        self.real_time_data['edge_intelligence'].append(edge_analysis)
+        self.real_time_data['security_analysis'].append(security_analysis)
+        
+        # Extract and store threat detections
+        if security_analysis and not security_analysis.get('error'):
+            threat_data = {
+                'timestamp': security_analysis.get('timestamp'),
+                'threat_level': security_analysis.get('threat_level', 'MINIMAL'),
+                'security_events': security_analysis.get('security_analysis', {}).get('security_events', []),
+                'threat_score': security_analysis.get('security_analysis', {}).get('threat_analysis', {}).get('overall_threat_score', 0.0)
+            }
+            self.real_time_data['threat_detections'].append(threat_data)
+        
+        # Trim old data
+        for key in self.real_time_data:
+            if len(self.real_time_data[key]) > max_entries:
+                self.real_time_data[key] = self.real_time_data[key][-max_entries:]
         
         # Autonomous spectrum management
         if insights and 'spectrum_analysis' in insights:
@@ -400,22 +507,6 @@ class Advanced5GOpenRANSystem:
             'system_health_score': np.random.uniform(85, 98),
             'autonomous_confidence': np.mean([action['confidence'] for action in actions]) if actions else 0.0
         }
-    
-    def _store_real_time_results(self, data, optimization, insights, twin_state, actions):
-        """Store results for real-time access"""
-        # Keep only last 100 entries for memory efficiency
-        max_entries = 100
-        
-        self.real_time_data['network_metrics'].append(data)
-        self.real_time_data['optimization_results'].append(optimization)
-        self.real_time_data['cognitive_insights'].append(insights)
-        self.real_time_data['digital_twin_states'].append(twin_state)
-        self.real_time_data['autonomous_actions'].append(actions)
-        
-        # Trim old data
-        for key in self.real_time_data:
-            if len(self.real_time_data[key]) > max_entries:
-                self.real_time_data[key] = self.real_time_data[key][-max_entries:]
     
     async def _generate_explanations(self, optimization_results: dict) -> dict:
         """Generate explainable AI insights"""
