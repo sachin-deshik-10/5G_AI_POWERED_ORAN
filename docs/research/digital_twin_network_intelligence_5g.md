@@ -70,6 +70,7 @@ y = h(x, v, t)
 ```
 
 Where:
+
 - `x`: Device state vector (power, temperature, load)
 - `u`: Control inputs (configuration parameters)
 - `w`: Process noise (environmental disturbances)
@@ -84,6 +85,7 @@ Y = H(X, V, G, t)
 ```
 
 Where:
+
 - `X`: Network-wide state vector
 - `G`: Network topology graph
 - `F`: Network dynamics function
