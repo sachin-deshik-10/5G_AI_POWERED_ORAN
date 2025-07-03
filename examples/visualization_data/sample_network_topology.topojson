@@ -1,0 +1,87 @@
+{
+  "type": "Topology",
+  "bbox": [-74.02, 40.70, -73.98, 40.73],
+  "transform": {
+    "scale": [0.0000010, 0.0000010],
+    "translate": [-74.02, 40.70]
+  },
+  "objects": {
+    "network": {
+      "type": "GeometryCollection",
+      "geometries": [
+        {
+          "type": "Point",
+          "coordinates": [2000, 3000],
+          "properties": {
+            "id": "gNodeB_001",
+            "type": "gNodeB",
+            "name": "Manhattan Central",
+            "operator": "VerizonWireless",
+            "bands": ["n77", "n78", "n261"],
+            "coverage_radius_m": 1200
+          }
+        },
+        {
+          "type": "Point",
+          "coordinates": [1000, 5280],
+          "properties": {
+            "id": "gNodeB_002",
+            "type": "gNodeB",
+            "name": "Manhattan North",
+            "operator": "VerizonWireless",
+            "bands": ["n77", "n78"],
+            "coverage_radius_m": 1000
+          }
+        },
+        {
+          "type": "Point",
+          "coordinates": [4000, 5280],
+          "properties": {
+            "id": "gNodeB_003",
+            "type": "gNodeB",
+            "name": "Manhattan East",
+            "operator": "ATT",
+            "bands": ["n77", "n261"],
+            "coverage_radius_m": 1100
+          }
+        },
+        {
+          "type": "LineString",
+          "arcs": [0],
+          "properties": {
+            "id": "backhaul_001",
+            "type": "backhaul",
+            "source": "gNodeB_001",
+            "target": "gNodeB_002",
+            "technology": "fiber",
+            "capacity_gbps": 25
+          }
+        },
+        {
+          "type": "LineString",
+          "arcs": [1],
+          "properties": {
+            "id": "backhaul_002",
+            "type": "backhaul",
+            "source": "gNodeB_002",
+            "target": "gNodeB_003",
+            "technology": "microwave",
+            "capacity_gbps": 10
+          }
+        }
+      ]
+    }
+  },
+  "arcs": [
+    [
+      [2000, 3000],
+      [1500, 4780],
+      [1000, 5280]
+    ],
+    [
+      [1000, 5280],
+      [2000, 4780],
+      [4000, 5280]
+    ]
+  ]
+}

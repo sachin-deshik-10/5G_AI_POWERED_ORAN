@@ -1,0 +1,319 @@
+{
+    "type": "FeatureCollection",
+    "name": "5G_Network_NYC_Sample",
+    "bbox": [
+        -74.02,
+        40.70,
+        -73.98,
+        40.73
+    ],
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -74.0059,
+                    40.7128
+                ]
+            },
+            "properties": {
+                "id": "gNodeB_001",
+                "type": "gNodeB",
+                "name": "Manhattan Central",
+                "operator": "VerizonWireless",
+                "technology": "5G NR",
+                "bands": [
+                    "n77",
+                    "n78",
+                    "n261"
+                ],
+                "height": 45,
+                "power_dbm": 43,
+                "coverage_radius_m": 1200,
+                "deployment_date": "2024-03-15",
+                "status": "operational",
+                "antenna_count": 3,
+                "mimo_config": "8T8R",
+                "beamforming": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -74.0159,
+                    40.7228
+                ]
+            },
+            "properties": {
+                "id": "gNodeB_002",
+                "type": "gNodeB",
+                "name": "Manhattan North",
+                "operator": "VerizonWireless",
+                "technology": "5G NR",
+                "bands": [
+                    "n77",
+                    "n78"
+                ],
+                "height": 38,
+                "power_dbm": 40,
+                "coverage_radius_m": 1000,
+                "deployment_date": "2024-02-28",
+                "status": "operational",
+                "antenna_count": 3,
+                "mimo_config": "4T4R",
+                "beamforming": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -73.9959,
+                    40.7228
+                ]
+            },
+            "properties": {
+                "id": "gNodeB_003",
+                "type": "gNodeB",
+                "name": "Manhattan East",
+                "operator": "ATT",
+                "technology": "5G NR",
+                "bands": [
+                    "n77",
+                    "n261"
+                ],
+                "height": 42,
+                "power_dbm": 41,
+                "coverage_radius_m": 1100,
+                "deployment_date": "2024-01-20",
+                "status": "operational",
+                "antenna_count": 2,
+                "mimo_config": "8T8R",
+                "beamforming": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        -74.0059,
+                        40.7128
+                    ],
+                    [
+                        -74.0109,
+                        40.7178
+                    ],
+                    [
+                        -74.0159,
+                        40.7228
+                    ]
+                ]
+            },
+            "properties": {
+                "id": "backhaul_001",
+                "type": "backhaul",
+                "source": "gNodeB_001",
+                "target": "gNodeB_002",
+                "technology": "fiber",
+                "capacity_gbps": 25,
+                "latency_ms": 1.2,
+                "redundancy": "yes",
+                "installation_date": "2024-02-15",
+                "status": "active"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        -74.0159,
+                        40.7228
+                    ],
+                    [
+                        -74.0059,
+                        40.7178
+                    ],
+                    [
+                        -73.9959,
+                        40.7228
+                    ]
+                ]
+            },
+            "properties": {
+                "id": "backhaul_002",
+                "type": "backhaul",
+                "source": "gNodeB_002",
+                "target": "gNodeB_003",
+                "technology": "microwave",
+                "capacity_gbps": 10,
+                "latency_ms": 2.5,
+                "redundancy": "no",
+                "installation_date": "2024-03-01",
+                "status": "active"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -74.0159,
+                            40.7178
+                        ],
+                        [
+                            -74.0059,
+                            40.7178
+                        ],
+                        [
+                            -74.0059,
+                            40.7278
+                        ],
+                        [
+                            -74.0159,
+                            40.7278
+                        ],
+                        [
+                            -74.0159,
+                            40.7178
+                        ]
+                    ]
+                ]
+            },
+            "properties": {
+                "id": "coverage_001",
+                "type": "coverage_area",
+                "cell_id": "gNodeB_001",
+                "signal_strength_dbm": -75,
+                "snr_db": 25,
+                "throughput_mbps": 850,
+                "user_count": 124,
+                "band": "n78",
+                "beam_id": 1
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -74.0209,
+                            40.7228
+                        ],
+                        [
+                            -74.0109,
+                            40.7228
+                        ],
+                        [
+                            -74.0109,
+                            40.7328
+                        ],
+                        [
+                            -74.0209,
+                            40.7328
+                        ],
+                        [
+                            -74.0209,
+                            40.7228
+                        ]
+                    ]
+                ]
+            },
+            "properties": {
+                "id": "coverage_002",
+                "type": "coverage_area",
+                "cell_id": "gNodeB_002",
+                "signal_strength_dbm": -78,
+                "snr_db": 22,
+                "throughput_mbps": 720,
+                "user_count": 98,
+                "band": "n78",
+                "beam_id": 1
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -74.0109,
+                    40.7178
+                ]
+            },
+            "properties": {
+                "id": "small_cell_001",
+                "type": "small_cell",
+                "name": "Manhattan Indoor",
+                "operator": "VerizonWireless",
+                "technology": "5G NR",
+                "bands": [
+                    "n261"
+                ],
+                "height": 6,
+                "power_dbm": 30,
+                "coverage_radius_m": 150,
+                "deployment_date": "2024-04-10",
+                "status": "operational",
+                "location_type": "indoor",
+                "building": "Office Complex A"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -74.0009,
+                    40.7198
+                ]
+            },
+            "properties": {
+                "id": "relay_001",
+                "type": "relay_node",
+                "name": "Manhattan Relay 1",
+                "parent_cell": "gNodeB_001",
+                "technology": "5G NR",
+                "bands": [
+                    "n77"
+                ],
+                "height": 15,
+                "power_dbm": 33,
+                "coverage_radius_m": 300,
+                "deployment_date": "2024-03-20",
+                "status": "operational"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -74.0079,
+                    40.7158
+                ]
+            },
+            "properties": {
+                "id": "building_001",
+                "type": "obstruction",
+                "obstruction_type": "building",
+                "height": 85,
+                "width": 60,
+                "length": 40,
+                "material": "concrete",
+                "rf_attenuation_db": 15,
+                "name": "Empire State Building"
+            }
+        }
+    ]
+}

@@ -319,7 +319,25 @@ python demo_advanced_system.py
 python launch_advanced_system.py
 ```
 
-### **3. Docker Deployment**
+### **3. Advanced Visualization Demo**
+
+```bash
+# Run comprehensive visualization demo
+python demo_advanced_visualization.py
+
+# Generate specific visualization formats
+python demo_advanced_visualization.py --output-dir visualization_output
+
+# Quick visualization for development (skip resource-intensive 3D)
+python demo_advanced_visualization.py --skip-3d --skip-performance
+
+# Generate GeoJSON network mapping
+from src.visualization.geospatial.integrated_visualizer import IntegratedNetworkVisualizer
+visualizer = IntegratedNetworkVisualizer()
+result = visualizer.generate_complete_visualization(network_data, "output/")
+```
+
+### **4. Docker Deployment**
 
 ```bash
 # Build and run with Docker Compose
@@ -590,6 +608,7 @@ We welcome contributions from the global 5G and AI community!
 - 💬 **Discord**: [Join our community](https://discord.gg/5g-oran)
 - 🐛 **Issues**: [GitHub Issues](https://github.com/sachin-deshik-10/issues)
 - 📖 **Documentation**: [Full Docs](https://docs.5g-oran-optimizer.ai)
+- 🗺️ **Visualization Guide**: [Advanced Geospatial & 3D Visualization](docs/visualization/GEOSPATIAL_3D_GUIDE.md)
 
 ## 📄 **License**
 
