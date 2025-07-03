@@ -46,12 +46,14 @@ Quantum computing offers potential exponential speedup for these computationally
 
 Consider a 5G network optimization problem with the following mathematical formulation:
 
-```mathematical
-minimize: f(x) = Σᵢ wᵢ × fᵢ(x)
-subject to: gⱼ(x) ≤ 0, j = 1, ..., m
-           hₖ(x) = 0, k = 1, ..., p
-           x ∈ X ⊆ ℝⁿ
-```
+$$
+\begin{align}
+\text{minimize: } f(x) &= \sum_i w_i \times f_i(x) \\
+\text{subject to: } g_j(x) &\leq 0, \quad j = 1, \ldots, m \\
+h_k(x) &= 0, \quad k = 1, \ldots, p \\
+x &\in X \subseteq \mathbb{R}^n
+\end{align}
+$$
 
 Where:
 
@@ -65,11 +67,9 @@ Where:
 
 **Latency Minimization:**
 
-```mathematical
-f_latency(x) = max{d_i + Σⱼ x_ij × l_ij}
-```
+$$f_{\text{latency}}(x) = \max\left\{d_i + \sum_j x_{ij} \times l_{ij}\right\}$$
 
-Where `d_i` is processing delay at node i, and `l_ij` is link latency.
+Where $d_i$ is processing delay at node $i$, and $l_{ij}$ is link latency.
 
 **Energy Efficiency:**
 

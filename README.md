@@ -603,7 +603,7 @@ We welcome contributions from the global 5G and AI community!
 
 ## 📞 **Support & Community**
 
-- 📧 **Email**: <support@5g-oran-optimizer.ai>
+- 📧 **Email**: <nayakulasachindeshik@gmail.com>
 - 💬 **Discord**: [Join our community](https://discord.gg/5g-oran)
 - 🐛 **Issues**: [GitHub Issues](https://github.com/sachin-deshik-10/issues)
 - 📖 **Documentation**: [Full Docs](https://docs.5g-oran-optimizer.ai)
