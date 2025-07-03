@@ -62,31 +62,31 @@ Legacy perimeter-based security models fail in Open RAN environments due to:
 
 For any entity E accessing resource R, the trust score T(E,R) is computed as:
 
-```mathematical
-T(E,R) = w₁ × I(E) + w₂ × B(E) + w₃ × C(E,R) + w₄ × T_hist(E)
-```
+$$
+T(E,R) = w_1 \times I(E) + w_2 \times B(E) + w_3 \times C(E,R) + w_4 \times T_{hist}(E)
+$$
 
 Where:
 
-- `I(E)`: Identity verification score
-- `B(E)`: Behavioral analysis score  
-- `C(E,R)`: Context appropriateness score
-- `T_hist(E)`: Historical trust score
-- `w₁, w₂, w₃, w₄`: Learned weight parameters
+- $I(E)$: Identity verification score
+- $B(E)$: Behavioral analysis score  
+- $C(E,R)$: Context appropriateness score
+- $T_{hist}(E)$: Historical trust score
+- $w_1, w_2, w_3, w_4$: Learned weight parameters
 
 #### 2.1.2 Dynamic Risk Assessment Model
 
 The risk R(t) at time t is computed using a temporal risk function:
 
-```mathematical
-R(t) = α × R_immediate(t) + β × R_contextual(t) + γ × R_predictive(t+Δt)
-```
+$$
+R(t) = \alpha \times R_{immediate}(t) + \beta \times R_{contextual}(t) + \gamma \times R_{predictive}(t+\Delta t)
+$$
 
 Where:
 
-- `R_immediate(t)`: Current threat indicators
-- `R_contextual(t)`: Environmental risk factors
-- `R_predictive(t+Δt)`: Predicted future risk
+- $R_{immediate}(t)$: Current threat indicators
+- $R_{contextual}(t)$: Environmental risk factors
+- $R_{predictive}(t+\Delta t)$: Predicted future risk
 
 ### 2.2 AI-Driven Behavioral Analytics
 
@@ -235,7 +235,7 @@ class BehavioralBaselineEngine:
             features['data_sensitivity'] = activity.get('data_sensitivity', 'low')
             
         return features
-```
+```python
 
 ### 2.3 Quantum-Safe Cryptographic Integration
 

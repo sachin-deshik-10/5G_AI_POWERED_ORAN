@@ -62,9 +62,7 @@ Edge federated learning transforms this paradigm by enabling:
 
 For network telemetry dataset D, our mechanism M satisfies (ε, δ)-differential privacy if:
 
-```mathematical
-Pr[M(D) ∈ S] ≤ e^ε × Pr[M(D') ∈ S] + δ
-```
+$$\Pr[M(D) \in S] \leq e^\varepsilon \times \Pr[M(D') \in S] + \delta$$
 
 Where D and D' differ by at most one record, ensuring:
 

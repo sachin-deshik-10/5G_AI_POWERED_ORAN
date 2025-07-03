@@ -64,18 +64,17 @@ Our digital twin framework models network behavior across multiple scales:
 
 **Device Level Modeling:**
 
-```mathematical
-dx/dt = f(x, u, w, t)
-y = h(x, v, t)
-```
+$$\frac{dx}{dt} = f(x, u, w, t)$$
+
+$$y = h(x, v, t)$$
 
 Where:
 
-- `x`: Device state vector (power, temperature, load)
-- `u`: Control inputs (configuration parameters)
-- `w`: Process noise (environmental disturbances)
-- `y`: Observable measurements (KPIs, telemetry)
-- `v`: Measurement noise
+- $x$: Device state vector (power, temperature, load)
+- $u$: Control inputs (configuration parameters)
+- $w$: Process noise (environmental disturbances)
+- $y$: Observable measurements (KPIs, telemetry)
+- $v$: Measurement noise
 
 **Network Level Dynamics:**
 
