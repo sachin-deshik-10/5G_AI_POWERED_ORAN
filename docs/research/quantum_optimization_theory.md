@@ -40,6 +40,7 @@ subject to: gⱼ(x) ≤ 0, j = 1, ..., m
 ```
 
 Where:
+
 - `f(x)`: Multi-objective function (latency, energy, throughput)
 - `wᵢ`: Dynamically adjusted weights based on network priorities
 - `gⱼ(x)`: Inequality constraints (capacity, QoS requirements)
@@ -51,11 +52,13 @@ Where:
 #### 2.2.1 Computational Complexity
 
 **Classical Complexity:**
+
 - Brute force: O(2ⁿ) for n binary variables
 - Approximation algorithms: O(n³) to O(n⁶)
 - Heuristic methods: O(n²) but no optimality guarantee
 
 **Quantum Complexity:**
+
 - VQE: O(poly(n)) with potential exponential speedup
 - QAOA: O(p × n) where p is circuit depth
 - Quantum Annealing: O(√N) for N-dimensional problems
@@ -69,6 +72,7 @@ T_quantum < T_classical × (1 - noise_factor)
 ```
 
 Where:
+
 - `T_quantum`: Quantum algorithm execution time
 - `T_classical`: Best known classical algorithm time
 - `noise_factor`: Quantum device noise and error rates
@@ -104,16 +108,19 @@ H = H_latency + H_energy + H_throughput + H_constraints
 Where each term encodes specific network objectives:
 
 **Latency Hamiltonian:**
+
 ```
 H_latency = Σᵢⱼ αᵢⱼ × d(i,j) × σᵢᶻσⱼᶻ
 ```
 
 **Energy Hamiltonian:**
+
 ```
 H_energy = Σᵢ βᵢ × P(i) × σᵢᶻ
 ```
 
 **Constraint Hamiltonian:**
+
 ```
 H_constraints = λ × Σ_violations (constraint_violation)²
 ```
@@ -125,11 +132,13 @@ H_constraints = λ × Σ_violations (constraint_violation)²
 For discrete optimization problems, QAOA uses:
 
 **Cost Function:**
+
 ```
 C = Σ_edges w_ij × (1 - σᵢᶻσⱼᶻ)/2
 ```
 
 **Mixing Hamiltonian:**
+
 ```
 B = Σᵢ σᵢˣ
 ```
@@ -180,6 +189,7 @@ Where measurement variance accounts for quantum noise and sampling errors.
 ### 4.1 Theoretical Performance Bounds
 
 **VQE Approximation Ratio:**
+
 ```
 f_VQE / f_optimal ≤ 1 + ε
 ```
@@ -187,6 +197,7 @@ f_VQE / f_optimal ≤ 1 + ε
 Where ε decreases exponentially with circuit depth.
 
 **QAOA Performance Guarantee:**
+
 ```
 E[C_QAOA] ≥ α × C_optimal
 ```
@@ -209,22 +220,26 @@ Testing on network optimization instances:
 ### 5.1 Hardware Requirements
 
 **Quantum Processing Units (QPUs):**
+
 - Minimum 50+ qubits for practical problems
 - Gate fidelity > 99.5%
 - Coherence time > 100μs
 
 **Classical Co-processors:**
+
 - High-performance GPUs for parameter optimization
 - Low-latency communication with QPU
 
 ### 5.2 Error Mitigation
 
 **Quantum Error Correction:**
+
 - Zero-noise extrapolation
 - Clifford data regression
 - Symmetry verification
 
 **Noise-Aware Optimization:**
+
 - Noise-resilient ansatz design
 - Error mitigation during measurement
 - Post-processing error correction
@@ -234,6 +249,7 @@ Testing on network optimization instances:
 ### 6.1 Fault-Tolerant Quantum Computing
 
 As fault-tolerant quantum computers emerge:
+
 - Shor's algorithm for cryptographic applications
 - Quantum linear algebra for massive MIMO
 - Quantum machine learning for network prediction
@@ -241,10 +257,12 @@ As fault-tolerant quantum computers emerge:
 ### 6.2 Quantum Internet Integration
 
 **Quantum Key Distribution (QKD):**
+
 - Unconditionally secure communications
 - Quantum-safe network protocols
 
 **Distributed Quantum Computing:**
+
 - Multi-site quantum optimization
 - Quantum-enhanced federated learning
 

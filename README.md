@@ -480,6 +480,7 @@ graph TB
 #### **1. Quantum Network Optimization Theory**
 
 **Mathematical Foundation:**
+
 ```
 Objective: min Σᵢ wᵢ × fᵢ(x) subject to constraints Cⱼ(x) ≤ 0
 
@@ -490,6 +491,7 @@ Where:
 ```
 
 **Quantum Advantage:**
+
 - **Superposition**: Parallel exploration of solution space
 - **Entanglement**: Correlation modeling between network components
 - **Interference**: Amplification of optimal solutions
@@ -497,6 +499,7 @@ Where:
 #### **2. Neuromorphic Network Processing Theory**
 
 **Spike-Based Computation Model:**
+
 ```
 Neuron Model: dv/dt = (gₗ(Eₗ-v) + gₑ(Eₑ-v) + gᵢ(Eᵢ-v))/C
 STDP Rule: Δw = A₊e^(-Δt/τ₊) if Δt > 0, A₋e^(Δt/τ₋) if Δt < 0
@@ -508,6 +511,7 @@ Where:
 ```
 
 **Neuromorphic Advantages:**
+
 - **Event-Driven**: Processing only when network events occur
 - **Ultra-Low Power**: 1000x more energy efficient than von Neumann
 - **Real-Time Learning**: Continuous adaptation to network changes
@@ -515,6 +519,7 @@ Where:
 #### **3. Federated Learning Convergence Theory**
 
 **Privacy-Preserving Optimization:**
+
 ```
 Global Model: w* = argmin Σᵢ nᵢ/n × Fᵢ(w) + λR(w)
 Privacy Guarantee: Pr[M(D) ∈ S] ≤ e^ε × Pr[M(D') ∈ S] + δ
@@ -528,16 +533,19 @@ Where:
 ### **🔍 Research Gaps Addressed**
 
 #### **1. Quantum-Classical Hybrid Network Control**
+
 - **Problem**: Optimal switching between quantum and classical algorithms
 - **Our Solution**: Adaptive threshold-based algorithm selection (confidence > 85%)
 - **Impact**: 40% improvement in optimization quality
 
 #### **2. Explainable Autonomous Network Operations**
+
 - **Problem**: Black-box AI decisions in critical network functions
 - **Our Solution**: SHAP-based feature importance + causal inference
 - **Impact**: 99% decision traceability for regulatory compliance
 
 #### **3. Zero-Trust Network Slicing**
+
 - **Problem**: Security isolation in dynamic network slices
 - **Our Solution**: Continuous verification with quantum-safe cryptography
 - **Impact**: 99.9% threat detection with <1s response time
