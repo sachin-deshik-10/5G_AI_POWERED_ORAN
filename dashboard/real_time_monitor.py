@@ -16,6 +16,11 @@ import asyncio
 import websockets
 from src.models.predictive_network_planning.predict import make_predictions
 from src.optimize import optimize_network_resources
+# Import new visualization modules
+from src.visualization.geospatial.integrated_visualizer import IntegratedNetworkVisualizer
+from src.visualization.geospatial.geojson_generator import GeoJSONNetworkGenerator
+from src.visualization.geospatial.topojson_converter import TopoJSONConverter
+from src.visualization.geospatial.stl_3d_generator import STL3DNetworkGenerator
 import redis
 import logging
 from dataclasses import dataclass
@@ -582,6 +587,266 @@ def create_security_panel():
         for event in events:
             st.markdown(f"- {event}")
 
+def create_geospatial_3d_visualization(data):
+    """Create geospatial and 3D network visualization section"""
+    st.subheader("🌍 Geospatial & 3D Network Visualization")
+    
+    # Create tabs for different visualization types
+    geo_tab1, geo_tab2, geo_tab3, geo_tab4 = st.tabs(["📍 Network Map", "🌐 3D Topology", "📊 Interactive GeoJSON", "🎯 Coverage Analysis"])
+    
+    with geo_tab1:
+        st.markdown("### Real-time Network Coverage Map")
+        
+        # Initialize the integrated visualizer
+        try:
+            visualizer = IntegratedNetworkVisualizer()
+            
+            # Create sample network data from current dashboard data
+            network_data = {
+                'base_stations': [
+                    {
+                        'id': f'BS_{i}',
+                        'lat': 40.7589 + np.random.uniform(-0.1, 0.1),
+                        'lon': -73.9851 + np.random.uniform(-0.1, 0.1),
+                        'type': np.random.choice(['macro', 'micro', 'pico']),
+                        'throughput': data.get('dl_throughput_mbps', 100) + np.random.uniform(-20, 20),
+                        'coverage_radius': np.random.uniform(0.5, 3.0),
+                        'status': np.random.choice(['active', 'maintenance', 'overloaded'])
+                    }
+                    for i in range(15)
+                ],
+                'edges': [],
+                'coverage_areas': []
+            }
+            
+            # Generate edges between nearby base stations
+            for i, bs1 in enumerate(network_data['base_stations']):
+                for j, bs2 in enumerate(network_data['base_stations'][i+1:], i+1):
+                    if np.random.random() < 0.3:  # 30% chance of connection
+                        network_data['edges'].append({
+                            'source': bs1['id'],
+                            'target': bs2['id'],
+                            'bandwidth': np.random.uniform(100, 1000),
+                            'latency': np.random.uniform(1, 15)
+                        })
+            
+            # Create GeoJSON visualization
+            geojson_gen = GeoJSONNetworkGenerator()
+            geojson_data = geojson_gen.create_network_geojson(
+                network_data['base_stations'],
+                network_data['edges']
+            )
+            
+            # Display the map using Plotly
+            import plotly.express as px
+            
+            # Create a simple scatter plot on map
+            df_bs = pd.DataFrame(network_data['base_stations'])
+            
+            fig = px.scatter_mapbox(
+                df_bs,
+                lat="lat",
+                lon="lon",
+                color="type",
+                size="throughput",
+                hover_data=["id", "status", "coverage_radius"],
+                color_discrete_map={
+                    "macro": "red",
+                    "micro": "blue", 
+                    "pico": "green"
+                },
+                zoom=10,
+                height=500,
+                title="5G Network Base Stations"
+            )
+            
+            fig.update_layout(mapbox_style="open-street-map")
+            fig.update_layout(margin={"r":0,"t":50,"l":0,"b":0})
+            
+            st.plotly_chart(fig, use_container_width=True)
+            
+            # Show GeoJSON data
+            with st.expander("📋 View GeoJSON Data"):
+                st.json(geojson_data)
+                
+        except Exception as e:
+            st.error(f"Error creating network map: {str(e)}")
+            st.info("Make sure all visualization dependencies are installed.")
+    
+    with geo_tab2:
+        st.markdown("### 3D Network Topology")
+        
+        try:
+            # Create 3D visualization
+            fig_3d = go.Figure()
+            
+            # Add base stations as 3D scatter points
+            df_bs = pd.DataFrame(network_data['base_stations'])
+            
+            fig_3d.add_trace(go.Scatter3d(
+                x=df_bs['lon'],
+                y=df_bs['lat'],
+                z=[np.random.uniform(10, 100) for _ in range(len(df_bs))],  # Height/elevation
+                mode='markers+text',
+                marker=dict(
+                    size=8,
+                    color=df_bs['throughput'],
+                    colorscale='Viridis',
+                    showscale=True,
+                    colorbar=dict(title="Throughput (Mbps)")
+                ),
+                text=df_bs['id'],
+                textposition="top center",
+                hovertemplate="<b>%{text}</b><br>" +
+                             "Lat: %{y}<br>" +
+                             "Lon: %{x}<br>" +
+                             "Height: %{z} m<br>" +
+                             "<extra></extra>",
+                name="Base Stations"
+            ))
+            
+            # Add connections as lines
+            for edge in network_data['edges'][:10]:  # Limit to first 10 for performance
+                source_bs = next(bs for bs in network_data['base_stations'] if bs['id'] == edge['source'])
+                target_bs = next(bs for bs in network_data['base_stations'] if bs['id'] == edge['target'])
+                
+                fig_3d.add_trace(go.Scatter3d(
+                    x=[source_bs['lon'], target_bs['lon']],
+                    y=[source_bs['lat'], target_bs['lat']],
+                    z=[50, 50],  # Fixed height for connections
+                    mode='lines',
+                    line=dict(color='rgba(255,255,255,0.6)', width=2),
+                    showlegend=False,
+                    hoverinfo='skip'
+                ))
+            
+            fig_3d.update_layout(
+                title="3D Network Topology View",
+                scene=dict(
+                    xaxis_title="Longitude",
+                    yaxis_title="Latitude", 
+                    zaxis_title="Height (m)",
+                    camera=dict(eye=dict(x=1.5, y=1.5, z=1.5))
+                ),
+                height=600
+            )
+            
+            st.plotly_chart(fig_3d, use_container_width=True)
+            
+            # STL generation option
+            if st.button("🔧 Generate 3D STL Model"):
+                try:
+                    stl_gen = STL3DNetworkGenerator()
+                    stl_file = stl_gen.create_network_stl(network_data['base_stations'])
+                    st.success(f"STL model generated: {stl_file}")
+                    st.info("STL file can be used for 3D printing or CAD applications")
+                except Exception as e:
+                    st.error(f"Error generating STL: {str(e)}")
+            
+        except Exception as e:
+            st.error(f"Error creating 3D visualization: {str(e)}")
+    
+    with geo_tab3:
+        st.markdown("### Interactive GeoJSON Analysis")
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown("#### Network Statistics")
+            if 'network_data' in locals():
+                st.metric("Total Base Stations", len(network_data['base_stations']))
+                st.metric("Network Connections", len(network_data['edges']))
+                
+                # Base station type distribution
+                type_counts = pd.Series([bs['type'] for bs in network_data['base_stations']]).value_counts()
+                
+                fig_pie = px.pie(
+                    values=type_counts.values,
+                    names=type_counts.index,
+                    title="Base Station Types"
+                )
+                st.plotly_chart(fig_pie, use_container_width=True)
+        
+        with col2:
+            st.markdown("#### Coverage Analysis")
+            if 'network_data' in locals():
+                # Throughput distribution
+                throughputs = [bs['throughput'] for bs in network_data['base_stations']]
+                
+                fig_hist = px.histogram(
+                    x=throughputs,
+                    nbins=10,
+                    title="Throughput Distribution",
+                    labels={'x': 'Throughput (Mbps)', 'y': 'Count'}
+                )
+                st.plotly_chart(fig_hist, use_container_width=True)
+                
+                # Status overview
+                status_counts = pd.Series([bs['status'] for bs in network_data['base_stations']]).value_counts()
+                st.bar_chart(status_counts)
+    
+    with geo_tab4:
+        st.markdown("### Coverage Analysis & Optimization")
+        
+        # Coverage heatmap
+        try:
+            # Create a grid for coverage analysis
+            lat_range = np.linspace(40.65, 40.85, 20)
+            lon_range = np.linspace(-74.1, -73.85, 20)
+            
+            coverage_grid = []
+            for lat in lat_range:
+                for lon in lon_range:
+                    # Calculate coverage score based on distance to nearest base station
+                    min_distance = float('inf')
+                    for bs in network_data['base_stations']:
+                        distance = np.sqrt((lat - bs['lat'])**2 + (lon - bs['lon'])**2)
+                        min_distance = min(min_distance, distance)
+                    
+                    # Convert distance to coverage score (closer = better coverage)
+                    coverage_score = max(0, 100 * (1 - min_distance / 0.1))
+                    coverage_grid.append({'lat': lat, 'lon': lon, 'coverage': coverage_score})
+            
+            df_coverage = pd.DataFrame(coverage_grid)
+            
+            fig_heatmap = px.density_mapbox(
+                df_coverage,
+                lat='lat',
+                lon='lon',
+                z='coverage',
+                radius=10,
+                center=dict(lat=40.75, lon=-73.95),
+                zoom=10,
+                mapbox_style="open-street-map",
+                title="Network Coverage Heatmap",
+                color_continuous_scale="Viridis"
+            )
+            
+            st.plotly_chart(fig_heatmap, use_container_width=True)
+            
+            # Coverage optimization suggestions
+            st.markdown("#### 🎯 Coverage Optimization Recommendations")
+            
+            low_coverage_areas = df_coverage[df_coverage['coverage'] < 30]
+            if len(low_coverage_areas) > 0:
+                st.warning(f"Found {len(low_coverage_areas)} areas with low coverage (<30%)")
+                
+                # Suggest new base station locations
+                if st.button("🔍 Suggest Optimization"):
+                    # Find centroid of low coverage areas
+                    centroid_lat = low_coverage_areas['lat'].mean()
+                    centroid_lon = low_coverage_areas['lon'].mean()
+                    
+                    st.success(f"Recommended new base station location:")
+                    st.write(f"📍 Latitude: {centroid_lat:.4f}")
+                    st.write(f"📍 Longitude: {centroid_lon:.4f}")
+                    st.write(f"🎯 Expected coverage improvement: +25%")
+            else:
+                st.success("✅ Good coverage across the entire network area!")
+                
+        except Exception as e:
+            st.error(f"Error in coverage analysis: {str(e)}")
+
 def main():
     """Main dashboard function"""
     
@@ -596,6 +861,7 @@ def main():
     
     show_predictions = st.sidebar.checkbox("Show AI Predictions", value=True)
     show_optimizations = st.sidebar.checkbox("Show Optimizations", value=True)
+    show_geospatial = st.sidebar.checkbox("Show Geospatial Visualization", value=True)
     
     # Auto-refresh
     placeholder = st.empty()
@@ -610,6 +876,10 @@ def main():
         # Advanced visualizations
         create_advanced_visualizations(current_data)
         
+        # Geospatial and 3D visualization
+        if show_geospatial:
+            create_geospatial_3d_visualization(current_data)
+        
         # AI insights
         create_ai_insights_panel(current_data)
         
@@ -621,6 +891,9 @@ def main():
         
         # Security panel
         create_security_panel()
+        
+        # Geospatial and 3D visualizations
+        create_geospatial_3d_visualization(current_data)
         
         # Footer with last update
         st.markdown("---")

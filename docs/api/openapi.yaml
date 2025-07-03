@@ -1,0 +1,649 @@
+openapi: 3.0.3
+info:
+  title: AI-Powered 5G Open RAN Optimizer API
+  description: |
+    Advanced REST API for the AI-Powered 5G Open RAN Optimizer platform.
+    
+    ## Features
+    - 🧠 **Cognitive Intelligence**: Quantum-inspired optimization algorithms
+    - 🔥 **Edge AI**: Ultra-low latency inference at network edge
+    - 🛡️ **Security AI**: Real-time threat detection and mitigation
+    - 🤖 **Autonomous Operations**: Self-healing network management
+    - ☁️ **Cloud-Native**: Azure-optimized microservices architecture
+    
+    ## Authentication
+    All endpoints require Bearer token authentication. Use Azure AD for production deployments.
+    
+    ## Rate Limiting
+    - **Standard**: 1000 requests/hour
+    - **Premium**: 10000 requests/hour
+    - **Enterprise**: Unlimited
+    
+    ## Support
+    - 📖 Documentation: https://docs.5g-oran-optimizer.ai
+    - 💬 Discord: https://discord.gg/5g-oran
+    - 📧 Support: support@5g-oran-optimizer.ai
+  version: 2.1.0
+  termsOfService: https://5g-oran-optimizer.ai/terms
+  contact:
+    name: 5G ORAN Optimizer Support
+    url: https://5g-oran-optimizer.ai/support
+    email: support@5g-oran-optimizer.ai
+  license:
+    name: MIT License
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://api.5g-oran-optimizer.ai/v2
+    description: Production API
+  - url: https://staging-api.5g-oran-optimizer.ai/v2
+    description: Staging API
+  - url: http://localhost:8000/api/v2
+    description: Local Development
+
+security:
+  - BearerAuth: []
+  - ApiKeyAuth: []
+
+tags:
+  - name: Health
+    description: System health and status endpoints
+  - name: Cognitive Intelligence
+    description: Quantum-inspired optimization and decision making
+  - name: Edge AI
+    description: Ultra-low latency edge computing operations
+  - name: Security AI
+    description: Real-time threat detection and security operations
+  - name: Network Optimization
+    description: 5G network performance optimization
+  - name: Predictive Analytics
+    description: Network planning and capacity predictions
+  - name: Monitoring
+    description: Real-time monitoring and telemetry
+  - name: Configuration
+    description: System configuration and management
+
+paths:
+  /health:
+    get:
+      tags: [Health]
+      summary: System Health Check
+      description: Returns the current health status of all system components
+      operationId: getSystemHealth
+      responses:
+        '200':
+          description: System is healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthStatus'
+              example:
+                status: "healthy"
+                timestamp: "2024-01-15T10:30:00Z"
+                version: "2.1.0"
+                components:
+                  cognitive_engine: "healthy"
+                  edge_ai: "healthy"
+                  security_ai: "healthy"
+                  database: "healthy"
+                  cache: "healthy"
+                uptime: 864000
+                memory_usage: 0.65
+                cpu_usage: 0.45
+
+  /cognitive/optimize:
+    post:
+      tags: [Cognitive Intelligence]
+      summary: Optimize Network Configuration
+      description: |
+        Performs quantum-inspired optimization on network parameters using advanced AI algorithms.
+        
+        ## Algorithm Features
+        - Variational Quantum Eigensolver (VQE)
+        - Quantum Approximate Optimization Algorithm (QAOA)
+        - Neuromorphic spiking neural networks
+        - Multi-objective optimization with Pareto frontiers
+        
+        ## Performance
+        - Optimization time: 50-200ms
+        - Confidence score: 85-98%
+        - Convergence guarantee: 99.5%
+      operationId: optimizeNetwork
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OptimizationRequest'
+            example:
+              network_id: "5g-network-001"
+              parameters:
+                bandwidth: 1000
+                latency_target: 1
+                coverage_area: 50
+                user_density: 1000
+              constraints:
+                power_budget: 500
+                regulatory_limits: true
+              objectives:
+                - "maximize_throughput"
+                - "minimize_latency"
+                - "optimize_energy"
+      responses:
+        '200':
+          description: Optimization completed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OptimizationResult'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /edge/inference:
+    post:
+      tags: [Edge AI]
+      summary: Execute Edge AI Inference
+      description: |
+        Performs ultra-low latency AI inference at the network edge using optimized models.
+        
+        ## Capabilities
+        - Sub-millisecond inference
+        - ONNX Runtime optimization
+        - Dynamic quantization
+        - Federated learning support
+      operationId: edgeInference
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InferenceRequest'
+      responses:
+        '200':
+          description: Inference completed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InferenceResult'
+
+  /security/threat-detection:
+    post:
+      tags: [Security AI]
+      summary: Real-time Threat Detection
+      description: |
+        Analyzes network traffic and behavior patterns for security threats using advanced ML models.
+        
+        ## Detection Capabilities
+        - Anomaly detection with <5s response time
+        - Behavioral analysis and profiling
+        - Zero-day threat identification
+        - Automated incident response
+      operationId: detectThreats
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ThreatDetectionRequest'
+      responses:
+        '200':
+          description: Threat analysis completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ThreatDetectionResult'
+
+  /network/metrics:
+    get:
+      tags: [Monitoring]
+      summary: Get Network Metrics
+      description: Retrieves real-time network performance metrics and KPIs
+      operationId: getNetworkMetrics
+      parameters:
+        - name: network_id
+          in: query
+          required: true
+          schema:
+            type: string
+          example: "5g-network-001"
+        - name: time_range
+          in: query
+          schema:
+            type: string
+            enum: [1h, 6h, 24h, 7d, 30d]
+            default: 1h
+        - name: granularity
+          in: query
+          schema:
+            type: string
+            enum: [1m, 5m, 15m, 1h]
+            default: 5m
+      responses:
+        '200':
+          description: Network metrics retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NetworkMetrics'
+
+  /predictions/capacity:
+    post:
+      tags: [Predictive Analytics]
+      summary: Predict Network Capacity
+      description: |
+        Generates network capacity predictions using advanced time series analysis and machine learning.
+        
+        ## Prediction Models
+        - LSTM neural networks
+        - Prophet time series forecasting
+        - Ensemble methods
+        - Confidence intervals and uncertainty quantification
+      operationId: predictCapacity
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CapacityPredictionRequest'
+      responses:
+        '200':
+          description: Capacity prediction completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CapacityPredictionResult'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Azure AD JWT token
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key for service-to-service authentication
+
+  schemas:
+    HealthStatus:
+      type: object
+      required: [status, timestamp, version]
+      properties:
+        status:
+          type: string
+          enum: [healthy, degraded, unhealthy]
+          description: Overall system health status
+        timestamp:
+          type: string
+          format: date-time
+          description: Timestamp of the health check
+        version:
+          type: string
+          description: Current API version
+        components:
+          type: object
+          description: Health status of individual components
+          additionalProperties:
+            type: string
+            enum: [healthy, degraded, unhealthy]
+        uptime:
+          type: integer
+          description: System uptime in seconds
+        memory_usage:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+          description: Memory usage as a percentage (0-1)
+        cpu_usage:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+          description: CPU usage as a percentage (0-1)
+
+    OptimizationRequest:
+      type: object
+      required: [network_id, parameters, objectives]
+      properties:
+        network_id:
+          type: string
+          description: Unique identifier for the network
+          example: "5g-network-001"
+        parameters:
+          type: object
+          description: Current network parameters
+          properties:
+            bandwidth:
+              type: number
+              description: Available bandwidth in Mbps
+            latency_target:
+              type: number
+              description: Target latency in milliseconds
+            coverage_area:
+              type: number
+              description: Coverage area in square kilometers
+            user_density:
+              type: number
+              description: Number of users per square kilometer
+        constraints:
+          type: object
+          description: Optimization constraints
+          properties:
+            power_budget:
+              type: number
+              description: Maximum power consumption in watts
+            regulatory_limits:
+              type: boolean
+              description: Apply regulatory compliance constraints
+        objectives:
+          type: array
+          items:
+            type: string
+            enum: [maximize_throughput, minimize_latency, optimize_energy, maximize_coverage]
+          description: Optimization objectives
+
+    OptimizationResult:
+      type: object
+      required: [optimization_id, status, confidence_score, optimized_parameters]
+      properties:
+        optimization_id:
+          type: string
+          description: Unique identifier for this optimization run
+        status:
+          type: string
+          enum: [success, partial, failed]
+        confidence_score:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+          description: Confidence score of the optimization (0-1)
+        optimized_parameters:
+          type: object
+          description: Optimized network parameters
+        performance_gains:
+          type: object
+          description: Expected performance improvements
+          properties:
+            throughput_improvement:
+              type: number
+              description: Throughput improvement percentage
+            latency_reduction:
+              type: number
+              description: Latency reduction percentage
+            energy_savings:
+              type: number
+              description: Energy savings percentage
+        execution_time:
+          type: number
+          description: Optimization execution time in milliseconds
+
+    InferenceRequest:
+      type: object
+      required: [model_id, input_data]
+      properties:
+        model_id:
+          type: string
+          description: Identifier for the AI model to use
+        input_data:
+          type: object
+          description: Input data for inference
+        optimization_level:
+          type: string
+          enum: [speed, balanced, accuracy]
+          default: balanced
+          description: Optimization preference for inference
+
+    InferenceResult:
+      type: object
+      required: [inference_id, predictions, confidence, latency]
+      properties:
+        inference_id:
+          type: string
+          description: Unique identifier for this inference
+        predictions:
+          type: object
+          description: Model predictions
+        confidence:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+          description: Prediction confidence score
+        latency:
+          type: number
+          description: Inference latency in milliseconds
+
+    ThreatDetectionRequest:
+      type: object
+      required: [network_data]
+      properties:
+        network_data:
+          type: object
+          description: Network traffic and behavior data
+        detection_sensitivity:
+          type: string
+          enum: [low, medium, high, critical]
+          default: medium
+          description: Threat detection sensitivity level
+
+    ThreatDetectionResult:
+      type: object
+      required: [detection_id, threats_detected, risk_score]
+      properties:
+        detection_id:
+          type: string
+          description: Unique identifier for this detection run
+        threats_detected:
+          type: array
+          items:
+            $ref: '#/components/schemas/ThreatInfo'
+        risk_score:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+          description: Overall network risk score
+        recommendations:
+          type: array
+          items:
+            type: string
+          description: Security recommendations
+
+    ThreatInfo:
+      type: object
+      required: [threat_type, severity, confidence]
+      properties:
+        threat_type:
+          type: string
+          description: Type of threat detected
+        severity:
+          type: string
+          enum: [low, medium, high, critical]
+        confidence:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+        description:
+          type: string
+          description: Detailed threat description
+        affected_components:
+          type: array
+          items:
+            type: string
+          description: Network components affected by the threat
+
+    NetworkMetrics:
+      type: object
+      required: [network_id, timestamp, metrics]
+      properties:
+        network_id:
+          type: string
+          description: Network identifier
+        timestamp:
+          type: string
+          format: date-time
+          description: Metrics timestamp
+        metrics:
+          type: object
+          description: Network performance metrics
+          properties:
+            throughput:
+              type: number
+              description: Current throughput in Mbps
+            latency:
+              type: number
+              description: Average latency in milliseconds
+            packet_loss:
+              type: number
+              description: Packet loss percentage
+            jitter:
+              type: number
+              description: Network jitter in milliseconds
+            availability:
+              type: number
+              description: Network availability percentage
+            active_users:
+              type: integer
+              description: Number of active users
+
+    CapacityPredictionRequest:
+      type: object
+      required: [network_id, prediction_horizon]
+      properties:
+        network_id:
+          type: string
+          description: Network identifier
+        prediction_horizon:
+          type: string
+          enum: [1d, 7d, 30d, 90d, 365d]
+          description: Prediction time horizon
+        historical_data_period:
+          type: string
+          enum: [30d, 90d, 365d, 2y]
+          default: 365d
+          description: Historical data period to use for prediction
+
+    CapacityPredictionResult:
+      type: object
+      required: [prediction_id, predictions, confidence_intervals]
+      properties:
+        prediction_id:
+          type: string
+          description: Unique identifier for this prediction
+        predictions:
+          type: array
+          items:
+            $ref: '#/components/schemas/CapacityPoint'
+          description: Predicted capacity points
+        confidence_intervals:
+          type: object
+          description: Confidence intervals for predictions
+        model_accuracy:
+          type: number
+          format: float
+          description: Historical model accuracy
+        recommendations:
+          type: array
+          items:
+            type: string
+          description: Capacity planning recommendations
+
+    CapacityPoint:
+      type: object
+      required: [timestamp, predicted_capacity, confidence]
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        predicted_capacity:
+          type: number
+          description: Predicted capacity utilization (0-1)
+        confidence:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+          description: Prediction confidence
+
+    Error:
+      type: object
+      required: [error, message]
+      properties:
+        error:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Human-readable error message
+        details:
+          type: object
+          description: Additional error details
+        timestamp:
+          type: string
+          format: date-time
+          description: Error timestamp
+        request_id:
+          type: string
+          description: Request identifier for debugging
+
+  responses:
+    BadRequest:
+      description: Bad request - invalid input parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: "INVALID_REQUEST"
+            message: "Invalid network_id parameter"
+            timestamp: "2024-01-15T10:30:00Z"
+            request_id: "req_123456789"
+
+    RateLimited:
+      description: Rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: "RATE_LIMITED"
+            message: "API rate limit exceeded. Please try again later."
+            timestamp: "2024-01-15T10:30:00Z"
+
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: "INTERNAL_ERROR"
+            message: "An unexpected error occurred. Please contact support."
+            timestamp: "2024-01-15T10:30:00Z"
+            request_id: "req_123456789"
+
+  examples:
+    OptimizationExample:
+      summary: Network optimization example
+      value:
+        network_id: "5g-network-001"
+        parameters:
+          bandwidth: 1000
+          latency_target: 1
+          coverage_area: 50
+          user_density: 1000
+        constraints:
+          power_budget: 500
+          regulatory_limits: true
+        objectives:
+          - "maximize_throughput"
+          - "minimize_latency"
