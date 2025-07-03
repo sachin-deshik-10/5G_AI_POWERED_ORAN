@@ -7,12 +7,6 @@ param environmentName string = 'adv-5g-oran'
 @description('Azure region/location')
 param location string = resourceGroup().location
 
-@description('Resource Group Name')
-param resourceGroupName string = resourceGroup().name
-
-@description('Principal ID of the user')
-param principalId string = ''
-
 @description('Additional parameters for environment variables')
 param fastApiEnv string = 'production'
 param logLevel string = 'INFO'
@@ -29,8 +23,8 @@ var resourcePrefix = 'adv5goran'
 // Tags
 var tags = {
   'azd-env-name': environmentName
-  'project': 'advanced-5g-openran-optimizer'
-  'environment': fastApiEnv
+  project: 'advanced-5g-openran-optimizer'
+  environment: fastApiEnv
 }
 
 // Log Analytics Workspace for monitoring
@@ -142,7 +136,10 @@ resource acrPullRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-
   name: guid(containerRegistry.id, managedIdentity.id, 'AcrPull')
   scope: containerRegistry
   properties: {
-    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '7f951dda-4ed3-4680-a7ca-43fe172d538d') // AcrPull
+    roleDefinitionId: subscriptionResourceId(
+      'Microsoft.Authorization/roleDefinitions',
+      '7f951dda-4ed3-4680-a7ca-43fe172d538d'
+    ) // AcrPull
     principalId: managedIdentity.properties.principalId
     principalType: 'ServicePrincipal'
   }
@@ -229,7 +226,7 @@ resource openAiService 'Microsoft.CognitiveServices/accounts@2023-10-01-preview'
 
 // Storage Account for data and model storage
 resource storageAccount 'Microsoft.Storage/storageAccounts@2023-01-01' = {
-  name: '${resourcePrefix}stor${resourceToken}'
+  name: '${resourcePrefix}st${resourceToken}'
   location: location
   tags: tags
   sku: {
@@ -541,7 +538,6 @@ resource dashboardContainerApp 'Microsoft.App/containerApps@2024-03-01' = {
   }
   dependsOn: [
     acrPullRoleAssignment
-    apiContainerApp
   ]
 }
 
@@ -550,7 +546,10 @@ resource cosmosDataContributorRoleAssignment 'Microsoft.Authorization/roleAssign
   name: guid(cosmosDbAccount.id, managedIdentity.id, 'CosmosDataContributor')
   scope: cosmosDbAccount
   properties: {
-    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '00000000-0000-0000-0000-000000000002') // Cosmos DB Built-in Data Contributor
+    roleDefinitionId: subscriptionResourceId(
+      'Microsoft.Authorization/roleDefinitions',
+      '00000000-0000-0000-0000-000000000002'
+    ) // Cosmos DB Built-in Data Contributor
     principalId: managedIdentity.properties.principalId
     principalType: 'ServicePrincipal'
   }
@@ -560,7 +559,10 @@ resource cognitiveServicesOpenAIUserRoleAssignment 'Microsoft.Authorization/role
   name: guid(openAiService.id, managedIdentity.id, 'CognitiveServicesOpenAIUser')
   scope: openAiService
   properties: {
-    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '5e0bd9bd-7b93-4f28-af87-19fc36ad61bd') // Cognitive Services OpenAI User
+    roleDefinitionId: subscriptionResourceId(
+      'Microsoft.Authorization/roleDefinitions',
+      '5e0bd9bd-7b93-4f28-af87-19fc36ad61bd'
+    ) // Cognitive Services OpenAI User
     principalId: managedIdentity.properties.principalId
     principalType: 'ServicePrincipal'
   }
@@ -570,7 +572,10 @@ resource storageBlobDataContributorRoleAssignment 'Microsoft.Authorization/roleA
   name: guid(storageAccount.id, managedIdentity.id, 'StorageBlobDataContributor')
   scope: storageAccount
   properties: {
-    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'ba92f5b4-2d11-453d-a403-e96b0029c9fe') // Storage Blob Data Contributor
+    roleDefinitionId: subscriptionResourceId(
+      'Microsoft.Authorization/roleDefinitions',
+      'ba92f5b4-2d11-453d-a403-e96b0029c9fe'
+    ) // Storage Blob Data Contributor
     principalId: managedIdentity.properties.principalId
     principalType: 'ServicePrincipal'
   }

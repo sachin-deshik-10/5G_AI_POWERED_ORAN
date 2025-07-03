@@ -86,8 +86,8 @@ ENV PYTHONUNBUFFERED=1 \
 
 # Start command using streamlit
 CMD ["python", "-m", "streamlit", "run", "dashboard/real_time_monitor.py", \
-     "--server.port=8501", \
-     "--server.address=0.0.0.0", \
-     "--server.headless=true", \
-     "--server.enableCORS=false", \
-     "--server.enableXsrfProtection=false"]
+    "--server.port=8501", \
+    "--server.address=0.0.0.0", \
+    "--server.headless=true", \
+    "--server.enableCORS=false", \
+    "--server.enableXsrfProtection=false"]
