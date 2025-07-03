@@ -68,8 +68,7 @@ graph TB
             RAN[Radio Access Network]
             CORE[5G Core Network]
             EDGE[Mobile Edge Computing]
-            SLICES[Network Slices
-    eMBB | URLLC | mMTC]
+            SLICES["Network Slices<br/>eMBB / URLLC / mMTC"]
         end
     
     subgraph "Real-Time Data Flow"
@@ -227,7 +226,7 @@ graph LR
 
 ## 📂 **Enhanced Project Structure**
 
-```
+```text
 📦 AI-Powered-5G-OpenRAN-Optimizer/
 ├── 🏗️ infra/                          # Azure Infrastructure
 │   ├── main.bicep                     # Complete Azure infrastructure
@@ -500,7 +499,7 @@ graph TB
 
 **Mathematical Foundation:**
 
-```
+```mathematical
 Objective: min Σᵢ wᵢ × fᵢ(x) subject to constraints Cⱼ(x) ≤ 0
 
 Where:
@@ -519,7 +518,7 @@ Where:
 
 **Spike-Based Computation Model:**
 
-```
+```mathematical
 Neuron Model: dv/dt = (gₗ(Eₗ-v) + gₑ(Eₑ-v) + gᵢ(Eᵢ-v))/C
 STDP Rule: Δw = A₊e^(-Δt/τ₊) if Δt > 0, A₋e^(Δt/τ₋) if Δt < 0
 
@@ -539,7 +538,7 @@ Where:
 
 **Privacy-Preserving Optimization:**
 
-```
+```mathematical
 Global Model: w* = argmin Σᵢ nᵢ/n × Fᵢ(w) + λR(w)
 Privacy Guarantee: Pr[M(D) ∈ S] ≤ e^ε × Pr[M(D') ∈ S] + δ
 

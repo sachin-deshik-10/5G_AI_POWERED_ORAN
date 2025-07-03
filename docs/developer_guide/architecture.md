@@ -79,7 +79,7 @@ graph TB
         RAN[Radio Access Network<br/>Distributed Base Stations]
         CORE[5G Core Network<br/>Service-Based Architecture]
         MEC[Mobile Edge Computing<br/>Edge Processing Nodes]
-        SLICES[Network Slices<br/>eMBB | URLLC | mMTC]
+        SLICES["Network Slices<br/>eMBB / URLLC / mMTC"]
     end
     
     ACA -.-> CIE
@@ -1029,23 +1029,24 @@ class PrivateFederatedLearning:
 #### **1. 6G Network Intelligence (2025-2030)**
 
 ```mermaid
-roadmap
+gantt
     title 6G Intelligence Evolution Roadmap
+    dateFormat  YYYY-MM-DD
     
-    section 2025
-        Native AI Integration : milestone, m1, 2025-03-31
-        Quantum-Enhanced Edge : milestone, m2, 2025-06-30
-        Holographic Communications : milestone, m3, 2025-09-30
+    section 2025 Milestones
+    Native AI Integration           :milestone, m1, 2025-03-31, 0d
+    Quantum-Enhanced Edge          :milestone, m2, 2025-06-30, 0d
+    Holographic Communications    :milestone, m3, 2025-09-30, 0d
     
-    section 2026
-        Semantic Networks : milestone, m4, 2026-03-31
-        Brain-Computer Interface : milestone, m5, 2026-06-30 
-        Digital Twin Reality : milestone, m6, 2026-09-30
+    section 2026 Developments
+    Semantic Networks             :milestone, m4, 2026-03-31, 0d
+    Brain-Computer Interface      :milestone, m5, 2026-06-30, 0d
+    Digital Twin Reality          :milestone, m6, 2026-09-30, 0d
     
     section Beyond 2026
-        Consciousness-like AI : milestone, m7, 2027-03-31
-        Quantum Internet : milestone, m8, 2028-03-31
-        Post-Human Networks : milestone, m9, 2030-03-31
+    Consciousness-like AI         :milestone, m7, 2027-03-31, 0d
+    Quantum Internet             :milestone, m8, 2028-03-31, 0d
+    Post-Human Networks          :milestone, m9, 2030-03-31, 0d
 ```
 
 **Research Priorities:**
