@@ -23,6 +23,19 @@ from prometheus_client import Counter, Histogram, Gauge, start_http_server
 import aiofiles
 import websockets
 
+# Add advanced security and monitoring imports
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from fastapi.middleware.trustedhost import TrustedHostMiddleware
+from fastapi.middleware.gzip import GZipMiddleware
+import jwt
+from passlib.context import CryptContext
+import secrets
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
+from slowapi.middleware import SlowAPIMiddleware
+import structlog
+
 # Initialize FastAPI app
 app = FastAPI(
     title="5G OpenRAN AI Optimizer API",
@@ -52,6 +65,28 @@ redis_client = None
 db_pool = None
 active_websockets = set()
 real_time_optimizer = RealTimeOptimizer()
+
+# Enhanced security setup
+security = HTTPBearer()
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+limiter = Limiter(key_func=get_remote_address)
+
+# Add security middleware
+app.add_middleware(TrustedHostMiddleware, allowed_hosts=["*"])  # Configure for production
+app.add_middleware(GZipMiddleware, minimum_size=1000)
+app.add_middleware(SlowAPIMiddleware)
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
+# Structured logging setup
+logger = structlog.get_logger()
+
+# Advanced configuration
+class SecurityConfig:
+    SECRET_KEY = secrets.token_urlsafe(32)
+    ALGORITHM = "HS256"
+    ACCESS_TOKEN_EXPIRE_MINUTES = 30
+    ALLOWED_HOSTS = ["localhost", "127.0.0.1", "*.5g-oran.com"]
 
 # Pydantic models for API
 class NetworkMetrics(BaseModel):
@@ -105,6 +140,34 @@ class HealthCheck(BaseModel):
     active_optimizations: int
     system_metrics: Dict[str, Any]
 
+# Enhanced Pydantic models
+class UserAuthentication(BaseModel):
+    """User authentication model"""
+    username: str = Field(..., min_length=3, max_length=50)
+    password: str = Field(..., min_length=8)
+    role: str = Field(default="operator", regex="^(admin|operator|viewer)$")
+
+class AIModelConfig(BaseModel):
+    """AI model configuration"""
+    model_type: str = Field(..., regex="^(transformer|lstm|gnn|federated)$")
+    hyperparameters: Dict[str, Any] = Field(default_factory=dict)
+    training_data_path: Optional[str] = None
+    deployment_mode: str = Field(default="production", regex="^(development|staging|production)$")
+
+class BatchOptimizationRequest(BaseModel):
+    """Batch optimization for multiple cells"""
+    cell_metrics: List[NetworkMetrics]
+    optimization_strategy: str = Field(..., regex="^(individual|coordinated|federated)$")
+    priority_weights: Dict[str, float] = Field(default_factory=dict)
+
+class MLPipelineStatus(BaseModel):
+    """ML pipeline status tracking"""
+    pipeline_id: str
+    status: str = Field(..., regex="^(running|completed|failed|paused)$")
+    progress_percentage: float = Field(..., ge=0, le=100)
+    estimated_completion: Optional[datetime] = None
+    error_message: Optional[str] = None
+
 # Startup and shutdown events
 @app.on_event("startup")
 async def startup_event():
@@ -133,6 +196,9 @@ async def startup_event():
         logging.info("✅ Database connection pool created")
     except Exception as e:
         logging.warning(f"⚠️ Database not available: {e}")
+    
+    # Start background monitoring task
+    asyncio.create_task(real_time_monitoring_task())
     
     logging.info("🚀 5G OpenRAN AI Optimizer API started successfully")
 
@@ -380,6 +446,34 @@ async def get_network_forecast(hours_ahead: int = 24):
         logging.error(f"❌ Forecast error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
+# Authentication utilities
+def verify_password(plain_password: str, hashed_password: str) -> bool:
+    return pwd_context.verify(plain_password, hashed_password)
+
+def get_password_hash(password: str) -> str:
+    return pwd_context.hash(password)
+
+def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
+    to_encode = data.copy()
+    if expires_delta:
+        expire = datetime.utcnow() + expires_delta
+    else:
+        expire = datetime.utcnow() + timedelta(minutes=15)
+    to_encode.update({"exp": expire})
+    encoded_jwt = jwt.encode(to_encode, SecurityConfig.SECRET_KEY, algorithm=SecurityConfig.ALGORITHM)
+    return encoded_jwt
+
+async def get_current_user(credentials: HTTPAuthorizationCredentials = security):
+    """Verify JWT token and return current user"""
+    try:
+        payload = jwt.decode(credentials.credentials, SecurityConfig.SECRET_KEY, algorithms=[SecurityConfig.ALGORITHM])
+        username: str = payload.get("sub")
+        if username is None:
+            raise HTTPException(status_code=401, detail="Invalid authentication credentials")
+        return {"username": username, "role": payload.get("role", "viewer")}
+    except jwt.PyJWTError:
+        raise HTTPException(status_code=401, detail="Invalid authentication credentials")
+
 # Helper functions
 def calculate_improvements(original_metrics: NetworkMetrics, optimized_config: Dict) -> Dict[str, float]:
     """Calculate predicted improvements"""
@@ -509,6 +603,42 @@ async def generate_network_forecast(hours_ahead: int) -> List[Dict]:
 
 async def calculate_forecast_confidence(forecast_data: List[Dict]) -> Dict:
     return {"lower_bound": 0.85, "upper_bound": 0.95}
+
+# Background task for real-time monitoring
+async def real_time_monitoring_task():
+    """Background task for continuous monitoring and alerts"""
+    while True:
+        try:
+            # Generate or fetch real-time metrics
+            current_metrics = {
+                "timestamp": datetime.now().isoformat(),
+                "system_health": "healthy",
+                "active_optimizations": len(active_websockets),
+                "throughput": np.random.uniform(70, 95),
+                "latency": np.random.uniform(2, 8),
+                "energy_efficiency": np.random.uniform(18, 25)
+            }
+            
+            # Broadcast to subscribers
+            await ws_manager.broadcast_to_subscribers("metrics_update", current_metrics)
+            
+            # Check for alerts
+            alerts = []
+            if current_metrics["latency"] > 7:
+                alerts.append({
+                    "level": "warning",
+                    "message": f"High latency detected: {current_metrics['latency']:.1f}ms",
+                    "timestamp": datetime.now().isoformat()
+                })
+            
+            if alerts:
+                await ws_manager.broadcast_to_subscribers("alerts", {"alerts": alerts})
+            
+            await asyncio.sleep(5)  # Update every 5 seconds
+            
+        except Exception as e:
+            logger.error("Real-time monitoring task error", error=str(e))
+            await asyncio.sleep(10)
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)

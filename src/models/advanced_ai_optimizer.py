@@ -11,6 +11,7 @@ This module implements state-of-the-art AI/ML techniques for 5G network optimiza
 - Real-time anomaly detection with streaming ML
 """
 
+import os
 import numpy as np
 import pandas as pd
 import json
@@ -20,6 +21,9 @@ from dataclasses import dataclass
 from datetime import datetime
 import asyncio
 import warnings
+from collections import deque
+import torch.nn.functional as F
+
 warnings.filterwarnings('ignore')
 
 # Advanced ML Libraries
@@ -239,130 +243,29 @@ class ReinforcementLearningOptimizer:
         for experience in experiences:
             self.trainer.train()
 
-class FederatedLearningCoordinator:
-    """
-    Federated Learning coordinator for distributed optimization.
-    Enables privacy-preserving learning across multiple network sites.
-    """
-    
-    def __init__(self, num_clients: int = 10, global_rounds: int = 100):
-        self.num_clients = num_clients
-        self.global_rounds = global_rounds
-        self.global_model = NetworkTransformer()
-        self.client_models = [NetworkTransformer() for _ in range(num_clients)]
-        
-    def federated_averaging(self) -> NetworkTransformer:
-        """Perform federated averaging to update global model."""
-        global_dict = self.global_model.state_dict()
-        
-        for key in global_dict.keys():
-            global_dict[key] = torch.stack([
-                client.state_dict()[key] for client in self.client_models
-            ]).mean(dim=0)
-        
-        self.global_model.load_state_dict(global_dict)
-        return self.global_model
-    
-    def distribute_model(self):
-        """Distribute global model to all clients."""
-        for client in self.client_models:
-            client.load_state_dict(self.global_model.state_dict())
-        
-        self.dropout = nn.Dropout(0.1)
-        
-    def forward(self, x):
-        # x shape: [batch_size, seq_len, input_dim]
-        batch_size, seq_len, _ = x.shape
-        
-        # Project input to model dimension
-        x = self.input_projection(x)
-        
-        # Add positional encoding
-        x += self.positional_encoding[:seq_len].unsqueeze(0)
-        
-        # Transpose for transformer (seq_len, batch_size, d_model)
-        x = x.transpose(0, 1)
-        
-        # Apply transformer
-        transformer_output = self.transformer_encoder(x)
-        
-        # Use the last timestep for predictions
-        last_output = transformer_output[-1]  # [batch_size, d_model]
-        
-        # Multi-task predictions
-        throughput_pred = torch.sigmoid(self.throughput_head(last_output)) * 200  # Scale to realistic range
-        latency_pred = torch.sigmoid(self.latency_head(last_output)) * 50  # 0-50ms
-        energy_pred = torch.sigmoid(self.energy_head(last_output)) * 100  # 0-100W
-        resource_allocation = F.softmax(self.resource_allocation_head(last_output), dim=-1)
-        
-        return {
-            'throughput': throughput_pred,
-            'latency': latency_pred,
-            'energy': energy_pred,
-            'resource_allocation': resource_allocation
-        }
-
-class DQNNetworkOptimizer(nn.Module):
-    """
-    Deep Q-Network for reinforcement learning-based network optimization
-    """
-    
-    def __init__(self, state_dim=15, action_dim=8, hidden_dim=512):
-        super(DQNNetworkOptimizer, self).__init__()
-        
-        self.network = nn.Sequential(
-            nn.Linear(state_dim, hidden_dim),
-            nn.ReLU(),
-            nn.Dropout(0.2),
-            nn.Linear(hidden_dim, hidden_dim),
-            nn.ReLU(),
-            nn.Dropout(0.2),
-            nn.Linear(hidden_dim, hidden_dim // 2),
-            nn.ReLU(),
-            nn.Linear(hidden_dim // 2, action_dim)
-        )
-        
-    def forward(self, x):
-        return self.network(x)
-
 class FederatedLearningOptimizer:
     """
-    Federated Learning implementation for distributed 5G network optimization
-    Allows multiple base stations to collaborate without sharing raw data
+    Federated Learning implementation for distributed 5G network optimization.
+    Allows multiple base stations to collaborate without sharing raw data.
     """
-    
     def __init__(self, model_class, model_kwargs):
         self.global_model = model_class(**model_kwargs)
         self.client_models = {}
         self.aggregation_weights = {}
-        
+
     def add_client(self, client_id, local_data_size):
-        """Add a new client (base station) to the federation"""
-        self.client_models[client_id] = model_class(**model_kwargs)
+        self.client_models[client_id] = type(self.global_model)(**self.global_model.hparams)
         self.aggregation_weights[client_id] = local_data_size
-        
+
     def federated_averaging(self):
-        """Perform FedAvg aggregation"""
         total_data_size = sum(self.aggregation_weights.values())
-        
-        # Initialize global parameters
-        global_state_dict = {}
-        
-        for name, param in self.global_model.state_dict().items():
-            global_state_dict[name] = torch.zeros_like(param)
-        
-        # Weighted averaging
+        global_state_dict = {name: torch.zeros_like(param) for name, param in self.global_model.state_dict().items()}
         for client_id, client_model in self.client_models.items():
             weight = self.aggregation_weights[client_id] / total_data_size
             client_state_dict = client_model.state_dict()
-            
             for name in global_state_dict:
                 global_state_dict[name] += weight * client_state_dict[name]
-        
-        # Update global model
         self.global_model.load_state_dict(global_state_dict)
-        
-        # Distribute global model to all clients
         for client_model in self.client_models.values():
             client_model.load_state_dict(global_state_dict)
 
@@ -499,71 +402,61 @@ class AdvancedTrainer:
 
 class RealTimeOptimizer:
     """
-    Real-time network optimization engine
+    Real-time network optimization engine using the advanced NetworkTransformer.
     """
-    
     def __init__(self, model_path=None):
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-        
         if model_path and os.path.exists(model_path):
             self.model = torch.load(model_path, map_location=self.device)
         else:
-            self.model = TransformerNetworkOptimizer().to(self.device)
-        
+            self.model = NetworkTransformer(input_dim=25, hidden_dim=512, num_heads=16, num_layers=8, output_dim=8).to(self.device)
         self.model.eval()
         self.optimization_history = deque(maxlen=1000)
-        
+
     def optimize_network_slice(self, network_state, slice_type='eMBB'):
         """
-        Optimize network slice configuration in real-time
-        
+        Optimize network slice configuration in real-time.
         Args:
-            network_state: Current network metrics
+            network_state: Current network metrics (np.ndarray or torch.Tensor)
             slice_type: Type of network slice (eMBB, URLLC, mMTC)
+        Returns:
+            dict: Optimization configuration
         """
-        
-        with torch.no_grad():
-            # Convert network state to tensor
-            state_tensor = torch.FloatTensor(network_state).unsqueeze(0).to(self.device)
-            
-            # Get AI predictions
-            predictions = self.model(state_tensor)
-            
-            # Slice-specific optimization
-            optimization_config = self._generate_slice_config(predictions, slice_type)
-            
-            # Store in history
-            self.optimization_history.append({
-                'timestamp': datetime.now(),
-                'slice_type': slice_type,
-                'predictions': predictions,
-                'config': optimization_config
-            })
-            
-            return optimization_config
-    
+        try:
+            with torch.no_grad():
+                if isinstance(network_state, np.ndarray):
+                    state_tensor = torch.FloatTensor(network_state).to(self.device)
+                else:
+                    state_tensor = network_state.to(self.device)
+                predictions = self.model(state_tensor)
+                optimization_config = self._generate_slice_config(predictions, slice_type)
+                self.optimization_history.append({
+                    'timestamp': datetime.now(),
+                    'slice_type': slice_type,
+                    'predictions': {k: v.item() for k, v in predictions.items()},
+                    'config': optimization_config
+                })
+                return optimization_config
+        except Exception as e:
+            logger.error(f"RealTimeOptimizer error: {e}")
+            return {'error': str(e)}
+
     def _generate_slice_config(self, predictions, slice_type):
-        """Generate slice-specific configuration"""
-        
         base_config = {
             'timestamp': datetime.now().isoformat(),
             'slice_type': slice_type,
             'predicted_throughput': predictions['throughput'].item(),
             'predicted_latency': predictions['latency'].item(),
-            'predicted_energy': predictions['energy'].item()
+            'predicted_energy': predictions['energy_efficiency'].item() if 'energy_efficiency' in predictions else predictions.get('energy', torch.tensor(0)).item()
         }
-        
         if slice_type == 'eMBB':
-            # Enhanced Mobile Broadband - optimize for throughput
             base_config.update({
                 'bandwidth_allocation': min(100, predictions['throughput'].item() * 1.2),
                 'modulation_scheme': 'QAM256' if predictions['throughput'].item() > 100 else 'QAM64',
                 'mimo_layers': 8 if predictions['throughput'].item() > 150 else 4,
                 'carrier_aggregation': True
             })
-            
         elif slice_type == 'URLLC':
-            # Ultra-Reliable Low Latency - optimize for latency and reliability
             base_config.update({
                 'latency_budget': min(1, predictions['latency'].item()),
                 'reliability_target': 99.999,
@@ -571,39 +464,30 @@ class RealTimeOptimizer:
                 'edge_computing': predictions['latency'].item() > 5,
                 'preemption_priority': 'highest'
             })
-            
         elif slice_type == 'mMTC':
-            # Massive Machine Type Communications - optimize for energy and connectivity
             base_config.update({
-                'power_class': 'low' if predictions['energy'].item() < 50 else 'normal',
+                'power_class': 'low' if base_config['predicted_energy'] < 50 else 'normal',
                 'connection_density': 'high',
                 'discontinuous_reception': True,
                 'extended_idle_mode': True
             })
-        
         return base_config
 
 def create_production_model():
-    """Create and initialize production-ready model"""
-    
-    # Model configuration
+    """Create and initialize production-ready NetworkTransformer model."""
     model_config = {
-        'input_dim': 25,  # Extended feature set
-        'd_model': 512,
-        'nhead': 16,
+        'input_dim': 25,
+        'hidden_dim': 512,
+        'num_heads': 16,
         'num_layers': 8,
-        'num_classes': 12
+        'output_dim': 8
     }
-    
-    model = TransformerNetworkOptimizer(**model_config)
-    
-    # Initialize with Xavier initialization for better convergence
+    model = NetworkTransformer(**model_config)
     for name, param in model.named_parameters():
         if 'weight' in name and len(param.shape) > 1:
             nn.init.xavier_uniform_(param)
         elif 'bias' in name:
             nn.init.constant_(param, 0)
-    
     return model
 
 def save_model_for_production(model, model_path, metadata):
@@ -625,6 +509,33 @@ def save_model_for_production(model, model_path, metadata):
     config_path = model_path.replace('.pth', '_config.json')
     with open(config_path, 'w') as f:
         json.dump(metadata, f, indent=2)
+
+class AdvancedAIOptimizer:
+    """
+    Unified interface for advanced AI-powered 5G OpenRAN optimization.
+    Exposes all advanced features: transformers, RL, federated learning, GNNs, multi-objective optimization, anomaly detection, forecasting.
+    """
+    def __init__(self, config: OptimizationConfig):
+        self.config = config
+        self.transformer = NetworkTransformer() if config.use_transformer else None
+        self.gnn = GraphNetworkOptimizer() if config.use_graph_neural_networks and GRAPH_AVAILABLE else None
+        self.rl = ReinforcementLearningOptimizer() if config.use_reinforcement_learning else None
+        self.federated = FederatedLearningOptimizer(NetworkTransformer, {}) if config.use_federated_learning else None
+        # Add more as needed (e.g., forecasting, anomaly detection)
+
+    def optimize(self, data, method: str = 'transformer'):
+        """Run optimization using the selected method."""
+        if method == 'transformer' and self.transformer:
+            return self.transformer(data)
+        elif method == 'gnn' and self.gnn:
+            return self.gnn(*data)
+        elif method == 'rl' and self.rl:
+            return self.rl.optimize_allocation(data)
+        elif method == 'federated' and self.federated:
+            # Example: federated averaging
+            return self.federated.federated_averaging()
+        else:
+            raise ValueError(f"Unknown or unavailable optimization method: {method}")
 
 if __name__ == "__main__":
     # Example usage
