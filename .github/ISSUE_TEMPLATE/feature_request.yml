@@ -1,0 +1,99 @@
+name: 🚀 Feature Request
+description: Suggest an idea for this project
+title: "[Feature]: "
+labels: ["enhancement", "needs-triage"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a new feature! 🚀
+        
+        We appreciate your ideas for improving the AI-Powered 5G Open RAN Optimizer.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Is your feature request related to a problem?
+      description: A clear and concise description of what the problem is.
+      placeholder: I'm always frustrated when...
+    validations:
+      required: false
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Describe the solution you'd like
+      description: A clear and concise description of what you want to happen.
+      placeholder: I would like to see...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Feature Category
+      description: Which area does this feature relate to?
+      options:
+        - AI/ML Enhancement
+        - Quantum Computing
+        - Neuromorphic Processing
+        - Security & Privacy
+        - Network Optimization
+        - Edge Computing
+        - Digital Twin
+        - Autonomous Operations
+        - Visualization & UI
+        - API Enhancement
+        - Performance
+        - Integration
+        - Documentation
+        - Testing
+        - DevOps/Infrastructure
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority Level
+      description: How important is this feature to you?
+      options:
+        - Low - Nice to have
+        - Medium - Would improve workflow
+        - High - Critical for adoption
+        - Critical - Blocker for usage
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Describe alternatives you've considered
+      description: A clear and concise description of any alternative solutions or features you've considered.
+      placeholder: Alternative approaches...
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional context
+      description: Add any other context, mockups, or screenshots about the feature request here.
+
+  - type: checkboxes
+    id: implementation
+    attributes:
+      label: Implementation Willingness
+      description: Are you willing to help implement this feature?
+      options:
+        - label: I would be willing to submit a PR for this feature
+        - label: I can provide technical guidance
+        - label: I can help with testing
+        - label: I can help with documentation
+
+  - type: checkboxes
+    id: research
+    attributes:
+      label: Research Contribution
+      description: Does this feature involve research aspects?
+      options:
+        - label: This involves novel AI/ML research
+        - label: This involves quantum computing research
+        - label: This involves neuromorphic computing research
+        - label: This involves network optimization research
+        - label: I can contribute research papers/citations

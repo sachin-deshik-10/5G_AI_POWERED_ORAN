@@ -64,12 +64,13 @@ graph TB
         AO[🤖 Autonomous Ops<br/>Self-Healing]
     end
     
-    subgraph "5G Network Infrastructure"
-        RAN[Radio Access Network]
-        CORE[5G Core Network]
-        EDGE[Mobile Edge Computing]
-        SLICES[Network Slices<br/>eMBB | URLLC | mMTC]
-    end
+        subgraph "5G Network Infrastructure"
+            RAN[Radio Access Network]
+            CORE[5G Core Network]
+            EDGE[Mobile Edge Computing]
+            SLICES[Network Slices
+    eMBB | URLLC | mMTC]
+        end
     
     subgraph "Real-Time Data Flow"
         METRICS[Network Metrics]

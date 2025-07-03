@@ -1,0 +1,149 @@
+name: 🔬 Research Contribution
+description: Contribute research findings or propose research collaboration
+title: "[Research]: "
+labels: ["research", "enhancement", "needs-review"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Welcome to our research community! 🔬
+        
+        We welcome research contributions that advance the state-of-the-art in AI-powered 5G networks.
+
+  - type: dropdown
+    id: research-area
+    attributes:
+      label: Research Area
+      description: Which research area does this relate to?
+      multiple: true
+      options:
+        - Quantum Computing & Optimization
+        - Neuromorphic Computing
+        - Digital Twin Technology
+        - Federated Learning
+        - Zero-Trust Security
+        - Autonomous Network Operations
+        - Edge AI Intelligence
+        - Network Slicing
+        - Energy Efficiency
+        - Explainable AI
+        - Multi-objective Optimization
+        - Graph Neural Networks
+        - Reinforcement Learning
+
+  - type: textarea
+    id: research-summary
+    attributes:
+      label: Research Summary
+      description: Provide a brief summary of your research contribution
+      placeholder: Describe your research findings, methodology, or proposed approach...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: contribution-type
+    attributes:
+      label: Contribution Type
+      description: What type of research contribution is this?
+      options:
+        - Novel Algorithm/Method
+        - Performance Improvement
+        - Theoretical Analysis
+        - Experimental Validation
+        - Benchmark/Dataset
+        - Survey/Literature Review
+        - Implementation Optimization
+        - Security Enhancement
+        - Research Collaboration Proposal
+
+  - type: textarea
+    id: technical-details
+    attributes:
+      label: Technical Details
+      description: Provide technical details about your research
+      placeholder: |
+        - Methodology used
+        - Key innovations
+        - Performance metrics
+        - Comparison with existing approaches
+        - Mathematical formulations (if applicable)
+
+  - type: textarea
+    id: references
+    attributes:
+      label: References & Citations
+      description: Provide relevant academic references
+      placeholder: |
+        List academic papers, preprints, or other references that support your research
+
+  - type: textarea
+    id: implementation
+    attributes:
+      label: Implementation Details
+      description: Do you have a working implementation?
+      placeholder: |
+        - Link to code repository
+        - Programming language/framework
+        - Hardware requirements
+        - Performance benchmarks
+
+  - type: checkboxes
+    id: validation
+    attributes:
+      label: Validation & Testing
+      description: How has this research been validated?
+      options:
+        - label: Theoretical proof provided
+        - label: Simulation results available
+        - label: Real-world testing completed
+        - label: Peer review completed
+        - label: Benchmarked against existing methods
+
+  - type: dropdown
+    id: publication-status
+    attributes:
+      label: Publication Status
+      description: What is the publication status of this research?
+      options:
+        - Unpublished work
+        - Preprint available
+        - Under review
+        - Published in conference
+        - Published in journal
+        - Patent filed
+        - Industry whitepaper
+
+  - type: textarea
+    id: collaboration
+    attributes:
+      label: Collaboration Interest
+      description: Are you interested in research collaboration?
+      placeholder: |
+        - Your research institution/organization
+        - Areas where you'd like to collaborate
+        - Resources you can contribute
+        - Timeline for collaboration
+
+  - type: checkboxes
+    id: integration
+    attributes:
+      label: Integration Plans
+      description: How do you envision integrating this research?
+      options:
+        - label: Can provide working code implementation
+        - label: Willing to help with integration
+        - label: Can provide ongoing research support
+        - label: Available for technical discussions
+        - label: Can contribute to documentation
+
+  - type: textarea
+    id: impact
+    attributes:
+      label: Expected Impact
+      description: What impact do you expect this research to have?
+      placeholder: |
+        - Performance improvements expected
+        - Novel capabilities enabled
+        - Potential applications
+        - Broader research implications
