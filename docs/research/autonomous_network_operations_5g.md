@@ -74,30 +74,52 @@ Current approaches lack:
 Our autonomous network operations framework consists of five interconnected layers:
 
 ```mermaid
-┌─────────────────────────────────────────────────────────┐
-│                 Intent-Based Interface                   │
-├─────────────────────────────────────────────────────────┤
-│              Decision and Planning Layer                 │
-│  ┌─────────────┐ ┌─────────────┐ ┌─────────────────────┐│
-│  │ Policy      │ │ Causal      │ │ Safety &           ││
-│  │ Engine      │ │ Inference   │ │ Validation         ││
-│  └─────────────┘ └─────────────┘ └─────────────────────┘│
-├─────────────────────────────────────────────────────────┤
-│               Autonomous Execution Layer                 │
-│  ┌─────────────┐ ┌─────────────┐ ┌─────────────────────┐│
-│  │ Self-Healing│ │ Resource    │ │ Performance        ││
-│  │ Engine      │ │ Manager     │ │ Optimizer          ││
-│  └─────────────┘ └─────────────┘ └─────────────────────┘│
-├─────────────────────────────────────────────────────────┤
-│            Monitoring and Detection Layer                │
-│  ┌─────────────┐ ┌─────────────┐ ┌─────────────────────┐│
-│  │ Multi-Modal │ │ Anomaly     │ │ Root Cause         ││
-│  │ Sensing     │ │ Detection   │ │ Analysis           ││
-│  └─────────────┘ └─────────────┘ └─────────────────────┘│
-├─────────────────────────────────────────────────────────┤
-│                Network Infrastructure                    │
-│           (5G RAN, Core, Edge, Transport)               │
-└─────────────────────────────────────────────────────────┘
+graph TB
+    subgraph "Intent-Based Interface"
+        IBI[Intent Specification & Translation]
+    end
+    
+    subgraph "Decision and Planning Layer"
+        PE[Policy Engine]
+        CI[Causal Inference]
+        SV[Safety & Validation]
+    end
+    
+    subgraph "Autonomous Execution Layer"
+        SH[Self-Healing Engine]
+        RM[Resource Manager]
+        PO[Performance Optimizer]
+    end
+    
+    subgraph "Monitoring and Detection Layer"
+        MMS[Multi-Modal Sensing]
+        AD[Anomaly Detection]
+        RCA[Root Cause Analysis]
+    end
+    
+    subgraph "Network Infrastructure"
+        NI[5G RAN, Core, Edge, Transport]
+    end
+    
+    IBI --> PE
+    IBI --> CI
+    IBI --> SV
+    
+    PE --> SH
+    CI --> RM
+    SV --> PO
+    
+    SH --> MMS
+    RM --> AD
+    PO --> RCA
+    
+    MMS --> NI
+    AD --> NI
+    RCA --> NI
+    
+    NI --> MMS
+    NI --> AD
+    NI --> RCA
 ```
 
 ### 3.2 Core Principles
